@@ -236,21 +236,10 @@ footer{
     padding-bottom: 50px;
     height:100px ;
 }
-.footer-item{
-    width: 100%;
-    box-sizing: border-box;
-}
-.footer-item ul{
-    display:inline-block;
-    margin: 0px 30px 0px 30px;
-    height:100%;
-    text-align: left;
-        
-}
-.footer-item li{
-    list-style: none;
-    color: white;
-    
+footer h3{
+    color: #fff;
+    float: right;
+    padding-right: 10px;
 }
 
 @media (max-width:800px) {
