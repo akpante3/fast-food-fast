@@ -98,6 +98,20 @@ const orderUpdate = (req, res) => {
   });
 };
 
+const getOneOrder = (req, res) => {
+  getOne(req.params.id).then((order) => {
+    res.send({
+      status: 'success',
+      message: 'order was succcessfully fetched',
+      data: order,
+    });
+  }).catch(() => {
+    res.status(404).send({
+      status: 'failure',
+      message: 'Order was not found',
+    });
+  });
+};
 
 export {
   getAllOrders,
