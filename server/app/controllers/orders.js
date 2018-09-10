@@ -83,19 +83,29 @@ const updateOrder = (paramsId, status) => {
   return Promise.resolve(result);
 };
 
-const placeNewOrder = (orderId) => {
-  const item = parseInt(orderId, 10);
-  const result = food.find(order => order.orderId === item);
+const placeNewOrder = (foodId) => {
+  const item = parseInt(foodId, 10);
+  const result = food.find(order => order.foodId === item);
   if (!result) {
     return Promise.reject();
   }
   const neworder = {
     food: result.food,
-    orderId: result.orderId,
+    foodId: result.foodId,
     id: Orders.length + 1,
   };
   Orders.push(neworder);
   return Promise.resolve(neworder);
+};
+
+const updateOrder = (id, status) => {
+  const orderId = parseInt(id, 10);
+  const result = Orders.find(order => order.id === orderId);
+  if (!result) {
+    return Promise.reject();
+  }
+  result.status = status;
+  return Promise.resolve(result);
 };
 
 export {
