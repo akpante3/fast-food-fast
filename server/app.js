@@ -8,5 +8,5 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.listen(port, () => {
-    console.log(`running on ${port}`);
+  console.log(`running on ${port}`);
 });
