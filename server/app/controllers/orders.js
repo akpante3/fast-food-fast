@@ -1,11 +1,13 @@
 
 import {
   Orders,
-  food,
+  menu,
 } from '../db/dbconnect';
 
 
 const allOrders = () => Promise.resolve(Orders);
+
+const allfood = () => Promise.resolve(menu);
 
 const getOne = (id) => {
   const orderId = parseInt(id, 10);
@@ -18,7 +20,7 @@ const getOne = (id) => {
 
 const placeNewOrder = (foodId) => {
   const item = parseInt(foodId, 10);
-  const result = food.find(order => order.foodId === item);
+  const result = menu.find(order => order.foodId === item);
   if (!result) {
     return Promise.reject();
   }
@@ -46,4 +48,5 @@ export {
   getOne,
   placeNewOrder,
   updateOrder,
+  allfood,
 };

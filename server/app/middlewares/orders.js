@@ -4,6 +4,7 @@ import {
   getOne,
   placeNewOrder,
   updateOrder,
+  allfood,
 } from './../controllers/orders';
 
 /** Get all Orders
@@ -13,6 +14,18 @@ import {
 */
 const getAllOrders = (req, res) => {
   allOrders().then((orders) => {
+    res.send({
+      status: 'success',
+      message: 'orders were fetched succcessfully',
+      data: orders,
+    });
+  }).catch(() => res.status(404).send({
+    status: 'failure',
+    message: 'Orders were not found',
+  }));
+};
+const getAllFood = (req, res) => {
+  allfood().then((orders) => {
     res.send({
       status: 'success',
       message: 'orders were fetched succcessfully',
@@ -105,4 +118,5 @@ export {
   getOneOrder,
   postNewOrder,
   orderUpdate,
+  getAllFood,
 };
