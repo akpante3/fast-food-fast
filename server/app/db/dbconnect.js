@@ -12,11 +12,11 @@ const Orders = [
 const food = [
   {
     food: 'fried chicken',
-    orderId: 1,
+    foodId: 1,
   },
   {
     food: 'burger',
-    orderId: 2,
+    foodId: 2,
   },
 ];
 
