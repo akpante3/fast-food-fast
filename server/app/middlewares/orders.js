@@ -2,6 +2,7 @@
 import {
   allOrders,
   getOne,
+  placeNewOrder,
 } from './../controllers/orders';
 
 /** Get all question
@@ -37,7 +38,24 @@ const getOneOrder = (req, res) => {
   });
 };
 
+const postNewOrder = (req, res) => {
+  placeNewOrder(req.body.orderId).then((order) => {
+    res.send({
+      status: 'success',
+      message: 'order was placed succcessfully',
+      data: order,
+    });
+  }).catch(() => {
+    res.status(404).send({
+      status: 'failure',
+      message: 'There was an error placing this order',
+    });
+  });
+};
+
+
 export {
   getAllOrders,
   getOneOrder,
+  postNewOrder,
 };

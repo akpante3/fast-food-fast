@@ -9,7 +9,7 @@ const Orders = [
   },
 ];
 
-const items = [
+const food = [
   {
     food: 'fried chicken',
     orderId: 1,
@@ -22,5 +22,5 @@ const items = [
 
 export {
   Orders,
-  items,
+  food,
 };
