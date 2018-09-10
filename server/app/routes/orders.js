@@ -10,7 +10,7 @@ import {
 
 const ordersRoutes = express.Router();
 
-ordersRoutes.get('/food', getAllFood);
+ordersRoutes.get('/menu', getAllFood);
 ordersRoutes.get('/orders', getAllOrders);
 ordersRoutes.get('/orders/:id', getOneOrder);
 ordersRoutes.post('/orders', postNewOrder);
