@@ -85,7 +85,7 @@ const updateOrder = (paramsId, status) => {
 
 const placeNewOrder = (foodId) => {
   const item = parseInt(foodId, 10);
-  const result = food.find(order => order.foodId === item);
+  const result = menu.find(order => order.foodId === item);
   if (!result) {
     return Promise.reject();
   }

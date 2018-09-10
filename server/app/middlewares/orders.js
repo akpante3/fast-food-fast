@@ -97,6 +97,18 @@ const orderUpdate = (req, res) => {
     });
   });
 };
+const getAllFood = (req, res) => {
+  allfood().then((orders) => {
+    res.send({
+      status: 'success',
+      message: 'orders were fetched succcessfully',
+      data: orders,
+    });
+  }).catch(() => res.status(404).send({
+    status: 'failure',
+    message: 'Orders were not found',
+  }));
+};
 /** Get one  order
  * @param {strings}
  * @return {object}
