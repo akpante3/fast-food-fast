@@ -1,7 +1,7 @@
 import expect from 'expect';
 import request from 'supertest';
 
-import { app } from './../../app';
+import app from './../../app';
 
 import {
   Orders,
