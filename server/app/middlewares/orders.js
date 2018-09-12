@@ -3,10 +3,11 @@ import {
   allOrders,
   getOne,
   placeNewOrder,
+  updateOrder,
 } from './../controllers/orders';
 
-/** Get all question
- * @param {object}
+/** Get all Orders
+ * @param {strings}
  * @return {object}
  * @public
 */
@@ -22,8 +23,18 @@ const getAllOrders = (req, res) => {
     message: 'Orders were not found',
   }));
 };
-
+/** Get one  order
+ * @param {strings}
+ * @return {object}
+ * @public
+*/
 const getOneOrder = (req, res) => {
+  if (!req.params.id) {
+    res.status(404).send({
+      status: 'failure',
+      message: 'id was not found,please input id',
+    });
+  }
   getOne(req.params.id).then((order) => {
     res.send({
       status: 'success',
@@ -37,9 +48,19 @@ const getOneOrder = (req, res) => {
     });
   });
 };
-
+/** post New order
+ * @param {strings}
+ * @return {object}
+ * @public
+*/
 const postNewOrder = (req, res) => {
-  placeNewOrder(req.body.orderId).then((order) => {
+  if (!req.body.foodId) {
+    res.status(404).send({
+      status: 'failure',
+      message: 'foodId  was not found,please input foodId',
+    });
+  }
+  placeNewOrder(req.body.foodId).then((order) => {
     res.send({
       status: 'success',
       message: 'order was placed succcessfully',
@@ -52,10 +73,36 @@ const postNewOrder = (req, res) => {
     });
   });
 };
+/** Update order status
+ * @param {strings}
+ * @return {object}
+ * @public
+*/
+const orderUpdate = (req, res) => {
+  if (!req.body.status) {
+    res.status(404).send({
+      status: 'failure',
+      message: 'status was not found,please input status',
+    });
+  }
+  updateOrder(req.params.id, req.body.status).then((order) => {
+    res.send({
+      status: 'success',
+      message: 'order was updated succcessfully',
+      data: order,
+    });
+  }).catch(() => {
+    res.status(404).send({
+      status: 'failure',
+      message: 'order was not found',
+    });
+  });
+};
 
 
 export {
   getAllOrders,
   getOneOrder,
   postNewOrder,
+  orderUpdate,
 };
