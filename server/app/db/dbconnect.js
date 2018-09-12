@@ -2,14 +2,16 @@ const Orders = [
   {
     food: 'fried chicken',
     id: 1,
+    foodId: 12,
   },
   {
     food: 'burger',
     id: 2,
+    foodId: 12,
   },
 ];
 
-const food = [
+const menu = [
   {
     food: 'fried chicken',
     foodId: 1,
@@ -22,5 +24,5 @@ const food = [
 
 export {
   Orders,
-  food,
+  menu,
 };

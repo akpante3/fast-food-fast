@@ -5,10 +5,12 @@ import {
   getOneOrder,
   postNewOrder,
   orderUpdate,
+  getAllFood,
 } from './../middlewares/orders';
 
 const ordersRoutes = express.Router();
 
+ordersRoutes.get('/food', getAllFood);
 ordersRoutes.get('/orders', getAllOrders);
 ordersRoutes.get('/orders/:id', getOneOrder);
 ordersRoutes.post('/orders', postNewOrder);
