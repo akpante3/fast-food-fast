@@ -24,6 +24,7 @@ const getAllOrders = (req, res) => {
     message: 'Orders were not found',
   }));
 };
+
 const getAllFood = (req, res) => {
   allfood().then((orders) => {
     res.send({
@@ -42,12 +43,6 @@ const getAllFood = (req, res) => {
  * @public
 */
 const getOneOrder = (req, res) => {
-  if (!req.params.id) {
-    res.status(404).send({
-      status: 'failure',
-      message: 'id was not found,please input id',
-    });
-  }
   getOne(req.params.id).then((order) => {
     res.send({
       status: 'success',
@@ -67,22 +62,16 @@ const getOneOrder = (req, res) => {
  * @public
 */
 const postNewOrder = (req, res) => {
-  if (!req.body.foodId) {
-    res.status(404).send({
-      status: 'failure',
-      message: 'foodId  was not found,please input foodId',
-    });
-  }
   placeNewOrder(req.body.foodId).then((order) => {
     res.send({
       status: 'success',
       message: 'order was placed succcessfully',
       data: order,
     });
-  }).catch(() => {
+  }).catch((message) => {
     res.status(404).send({
       status: 'failure',
-      message: 'There was an error placing this order',
+      message,
     });
   });
 };
@@ -92,22 +81,16 @@ const postNewOrder = (req, res) => {
  * @public
 */
 const orderUpdate = (req, res) => {
-  if (!req.body.status) {
-    res.status(404).send({
-      status: 'failure',
-      message: 'status was not found,please input status',
-    });
-  }
   updateOrder(req.params.id, req.body.status).then((order) => {
-    res.send({
+    res.status(200).send({
       status: 'success',
       message: 'order was updated succcessfully',
       data: order,
     });
-  }).catch(() => {
+  }).catch((message) => {
     res.status(404).send({
       status: 'failure',
-      message: 'order was not found',
+      message,
     });
   });
 };
