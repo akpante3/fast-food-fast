@@ -69,7 +69,10 @@ describe('POST /api/v1/orders', () => {
   });
 
   it('it should return a 404 "not found"', (done) => {
-    const item = { foodId: '09' };
+    const item = {
+      foodId: 700,
+      quantity: 7,
+    };
     request(app)
       .post('/api/v1/orders')
       .send(item)
