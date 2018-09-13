@@ -1,15 +1,4 @@
-const Orders = [
-  {
-    food: 'fried chicken',
-    id: 1,
-    foodId: 12,
-  },
-  {
-    food: 'burger',
-    id: 2,
-    foodId: 12,
-  },
-];
+const Orders = [];
 
 const menu = [
   {
@@ -19,6 +8,18 @@ const menu = [
   {
     food: 'burger',
     foodId: 2,
+  },
+  {
+    food: 'meat pie',
+    foodId: 3,
+  },
+  {
+    food: 'pizza',
+    foodId: 4,
+  },
+  {
+    food: 'roasted chicken',
+    foodId: 5,
   },
 ];
 
