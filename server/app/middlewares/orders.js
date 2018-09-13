@@ -97,7 +97,11 @@ const orderUpdate = (req, res) => {
     });
   });
 };
-
+/** Get menu
+ * @param {strings}
+ * @return {object}
+ * @public
+*/
 const getAllFood = (req, res) => {
   allfood().then((orders) => {
     res.send({
@@ -135,7 +139,7 @@ const getOneOrder = (req, res) => {
  * @public
 */
 const postNewOrder = (req, res) => {
-  placeNewOrder(req.body.foodId).then((order) => {
+  placeNewOrder(req.body.foodId, req.body.quantity).then((order) => {
     res.send({
       status: 'success',
       message: 'order was placed succcessfully',

@@ -88,10 +88,11 @@ const placeNewOrder = (foodId) => {
   const noFoodId = 'foodId was not found,plese input foodId';
   const noResult = 'order was not found,please place valid order';
 
-  if (!foodId) {
+  if (!foodId || !quantity) {
     return Promise.reject(noFoodId);
   }
   const item = parseInt(foodId, 10);
+  const itemQuantity = parseInt(quantity, 10);
   const result = menu.find(order => order.foodId === item);
   if (!result) {
     return Promise.reject(noResult);
@@ -100,11 +101,16 @@ const placeNewOrder = (foodId) => {
     food: result.food,
     foodId: result.foodId,
     id: Orders.length + 1,
+    quantity: itemQuantity,
   };
   Orders.push(neworder);
   return Promise.resolve(neworder);
 };
-
+/** update Order
+ * @param {strings}
+ * @return {object}
+ * @public
+*/
 const updateOrder = (id, status) => {
   const notFound = 'order was not found';
   const noStatus = 'status was not found,please input status';
