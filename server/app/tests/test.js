@@ -8,7 +8,7 @@ import {
   menu,
 } from '../db/dbconnect';
 
-// Get menu
+
 describe('GET /api/v1/menu', () => {
   it('should return menu of avaliable food', (done) => {
     request(app)
@@ -23,9 +23,20 @@ describe('GET /api/v1/menu', () => {
   });
 });
 
-// Get all orders
 describe('GET /api/v1/orders', () => {
-  it('respond with json containing a list of all users', (done) => {
+  it('should return a 404 no order has been made', (done) => {
+    request(app)
+      .get('/api/v1/orders')
+      .expect(404)
+      .end(done);
+  });
+
+  it('respond with json containing a list of all orders', (done) => {
+    const data = {
+      foodId: 2,
+      quantity: 7,
+    };
+    Orders.push(data);
     request(app)
       .get('/api/v1/orders')
       .set('Accept', 'application/json')
@@ -38,9 +49,12 @@ describe('GET /api/v1/orders', () => {
   });
 });
 
-// post order
+
 describe('POST /api/v1/orders', () => {
-  const data = { foodId: 1 };
+  const data = {
+    foodId: 1,
+    quantity: 6,
+  };
 
   it('it should post order successfully', (done) => {
     request(app)
@@ -72,15 +86,15 @@ describe('POST /api/v1/orders', () => {
       .end(done);
   });
 });
-// GET one
+
 describe('GET /api/v1/orders/:id', () => {
-  const order = {
-    food: 'meat pie',
-    id: 65,
-    foodId: 12,
-  };
-  Orders.push(order);
   it('should fetch an order', (done) => {
+    const order = {
+      food: 'meat pie',
+      id: 65,
+      foodId: 12,
+    };
+    Orders.push(order);
     request(app)
       .get('/api/v1/orders/65')
       .set('Accept', 'application/json')
@@ -111,14 +125,14 @@ describe('GET /api/v1/orders/:id', () => {
 });
 //  PUT orders
 describe('PUT /api/v1/orders/:id', () => {
-  const order = {
-    food: 'meat pie',
-    id: 988,
-    foodId: 12,
-  };
   const status = { status: 'complete' };
-  Orders.push(order);
   it('should update status of an order', (done) => {
+    const order = {
+      food: 'meat pie',
+      id: 988,
+      foodId: 12,
+    };
+    Orders.push(order);
     request(app)
       .put('/api/v1/orders/988')
       .send(status)
@@ -163,3 +177,4 @@ describe('PUT /api/v1/orders/:id', () => {
       });
   });
 });
+
