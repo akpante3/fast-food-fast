@@ -1,12 +1,6 @@
 const addCart = Array.from(document.querySelectorAll('.add-cart'));
 const shoppingCart = document.querySelector('.shopping-cart-button');
 
-const toggle_prev = (elem) => {
-    do{
-        elem = elem.previousSibling;
-    } while (elem && elem.nodeType != 1);
-    return elem   
-}
 const toggle_next= (elem) =>  {
     do{
         elem = elem.nextSibling;
@@ -20,27 +14,31 @@ const toggle_info = (elem) => {
          nextElem.style.display = 'none';
         } else {
          nextElem.style.display='block';
+         nextElem.innerHTML=`                    
+         <h3>Number of Orders:</h3>
+         <br>
+         <div>
+             <button class="decline" onclick="decline(this)" >Deline</button> <button class="accept" onclick="accept_btn(this); return false">Accept</button>
+             <div></div>
+         </div>`
         } 
 }
+
 const accept_btn = (elem) =>{
-    const nextBtn = toggle_next(elem);
-    const prevBtn = toggle_prev(elem);
-    prevBtn.style.display = 'none';
-    elem.style.display = 'none';
-    nextBtn.style.display = 'block';
+    console.log(elem.parentElement)
+    elem.parentElement.innerHTML =`<button class="deliver" onclick="deliver(this)">deliver</button>`;
 }
 const decline = (elem) => {
-    const prevdiv = toggle_prev(elem);
-    const nextBtn = toggle_next(elem);
-    prevdiv.innerHTML = `<h4>order was Declined</h4> <button id='restore'>Restore</button>`
-    nextBtn.style.display = 'none';
-    elem.style.display = 'none';
+    elem.parentElement.innerHTML = `<h4>order was declined</h4><button class='restore' onclick='restore(this)'>restore</button>`;
 }
-
+const restore = (elem) => {
+    elem.parentElement.innerHTML = '<button class="decline" onclick="decline(this)" >Deline</button> <button id="accept" onclick="accept_btn(this); return false">Accept</button>';
+}
 const deliver = (elem) => {
-    const nextBtn = toggle_next(elem);
-    nextBtn.innerHTML = `<h4>Order has been delivered</h4>`
-    elem.style.display = 'none';
+    elem.parentElement.innerHTML ='<h4>order has been delivered</h4>';
+}
+const deleteCart = (elem) => {
+    elem.parentElement.style.display='none';
 }
 let num = 0;
 addCart.forEach((elem) => {
