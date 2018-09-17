@@ -1,4 +1,5 @@
-const addCart = Array.from(document.querySelectorAll('.add-cart'));
+const choose = Array.from(document.querySelectorAll('.choose'));
+// const addCart = Array.from(document.querySelectorAll('.add-cart'));
 const shoppingCart = document.querySelector('.shopping-cart-button');
 
 const toggle_next= (elem) =>  {
@@ -41,10 +42,10 @@ const deleteCart = (elem) => {
     elem.parentElement.style.display='none';
 }
 let num = 0;
-addCart.forEach((elem) => {
-    elem.addEventListener('click', () => {
-      num += 1
-      shoppingCart.innerHTML =` ${num}`;
-    });
-    
-});
+
+const addCart = (elem) => {
+    elem.parentElement.innerHTML= `<button class="add-cart"><i class="fas fa-shopping-cart fa-1x"></i>  added to cart</button> `;
+    num += 1
+    shoppingCart.innerHTML =` ${num}`;
+} 
+
