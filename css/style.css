@@ -160,20 +160,39 @@ button:hover {
     padding: 1.5em;
 }
 .select{
-    width: 40%;
+    width: 10%;
 }
 #search-bar{  
-    border-radius: 20px;
-    width: 200px;
-    height:30% ;
+    background-color: white;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    width: 40%;
+    padding: 10px 15px;
+    margin-right: 0px;
     border: solid 1px #4d4d4d;
-    padding-right: 5px;
+    /* padding-right: 5px; */
     transition:0.3s;
+    display: inline;
   }
   #search-bar:focus{
-    border: solid 1px rgb(253, 157, 101);;
     width: 50%;
-    transition:0.5s;
+    transition:0.5s; 
+  }
+  #submit{
+    background-color: rgb(255, 135, 66);
+    display: inline;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 0px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 0px;
+    padding: 10px 15px;
+    border-right: 2px solid rgb(255, 135, 66);
+    margin-left: 0px;
+    border: 1px solid rgb(255, 135, 66);
+    color: white;
+  }
+  #submit:hover{
+    cursor: pointer;
   }
 .feature-header {
   text-align: center;
