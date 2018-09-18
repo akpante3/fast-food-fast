@@ -1,7 +1,10 @@
 {
   "root": true,
   "extends": "airbnb",
+<<<<<<< HEAD
 
+=======
+>>>>>>> a0bb6df3dab5870f00a379e2efd2a141a756aee5
   "env": {
     "node": true,
     "browser": true,
@@ -20,7 +23,10 @@
     "no-useless-escape": 0,
     "no-case-declarations": 0,
     "comma-dangle": 0,
+<<<<<<< HEAD
     "linebreak-style": [true, "CRLF"],
+=======
+>>>>>>> a0bb6df3dab5870f00a379e2efd2a141a756aee5
     "curly": ["error", "multi-line"],
     "import/no-unresolved": [2, { "commonjs": true }],
     "no-shadow": ["error", { "allow": ["req", "res", "err"] }],
@@ -42,4 +48,7 @@
     "mocha"
   ]
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a0bb6df3dab5870f00a379e2efd2a141a756aee5
