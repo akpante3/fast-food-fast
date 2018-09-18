@@ -93,7 +93,7 @@
     padding: 1.5em;
     
 }
-input[type=text], input[type=password] {
+.sign-container input[type=text],.sign-container input[type=password] {
     width: 100%;
     padding: 15px;
     margin: 5px 0 22px 0;
@@ -103,7 +103,7 @@ input[type=text], input[type=password] {
     border-radius: 9px;
 }
 
-input[type=text]:focus, input[type=password]:focus {
+.sign-container input[type=text]:focus, .sign-container input[type=password]:focus {
     background-color: #ddd;
     outline: none;
 }
@@ -163,17 +163,31 @@ button:hover {
     width: 40%;
 }
 #search-bar{  
-    border-radius: 20px;
-    width: 200px;
-    height:30% ;
+    background-color: white;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    width: 40%;
+    padding: 10px 15px;
     border: solid 1px #4d4d4d;
     padding-right: 5px;
     transition:0.3s;
   }
   #search-bar:focus{
-    border: solid 1px rgb(253, 157, 101);;
     width: 50%;
     transition:0.5s;
+    
+  }
+  #submit{
+    background-color: rgb(255, 135, 66);
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 10px 15px;
+    margin-right: 0px;
+    border: 1px solid rgb(255, 135, 66);
+    color: white;
+  }
+  #submit:hover{
+    cursor: pointer;
   }
 .feature-header {
   text-align: center;
