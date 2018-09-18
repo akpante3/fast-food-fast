@@ -10,7 +10,7 @@
     width: 100%;
     height: 100%;
     background-blend-mode: multiply;
-    background-color: rgb(255, 190, 71);
+    background-color: rgb(243, 133, 69);;
  }
  article {
      min-height: 100%;
@@ -22,7 +22,7 @@
  .nav {
     height: 50px;
     width: 100%;
-    background-color:  rgba(15, 15, 15, 0.6);
+    background-color:  rgba(15, 15, 15);
     z-index: 3;
     position: relative;
     padding-bottom: 5px;
@@ -31,7 +31,7 @@
   }
   .nav-title > a{
     text-decoration: none;
-    color: white;
+    color: rgb(255, 135, 66);
     font-family: 'Hanalei Fill', cursive;
   }
   
@@ -69,7 +69,7 @@
   }
   
   .nav > .nav-links > a:hover {
-    color:orange;
+    color:rgb(255, 135, 66);
   }
   
   .nav > #nav-check {
@@ -84,10 +84,6 @@
   }
 
 /* SIGN-UP LOG-IN FORM */
-.page-logo{
-  font-family: 'Hanalei Fill', cursive;
-  color: orange;
-}
 .sign-container{
     width: 30%;
     border-radius: 20px;
@@ -118,7 +114,7 @@ hr {
 }
 
 button {
-    background-color:orange;
+    background-color:rgb(255, 135, 66);
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -131,7 +127,9 @@ button {
     
 }
 button:hover {
-    opacity:1;
+    background-color:rgb(255, 94, 0);
+    transition: 0.5s;
+    box-shadow: 0 7px 9px rgba(15, 15, 15, 0.5);
 }
 
 .cancelbtn, .signupbtn, {
@@ -157,9 +155,12 @@ button:hover {
     border-radius: 20px;
     background-color: #fff;
     text-align: center; 
-    box-shadow: 1px 20px 20px rgba(15, 15, 15, 0.5);
+    box-shadow: 1px 20px 20px rgba(0, 0, 0, 0.6);
     margin: 0 auto;
     padding: 1.5em;
+}
+.select{
+    width: 40%;
 }
 #search-bar{  
     border-radius: 20px;
@@ -170,12 +171,9 @@ button:hover {
     transition:0.3s;
   }
   #search-bar:focus{
-    border: solid 1px orange;
+    border: solid 1px rgb(253, 157, 101);;
     width: 50%;
     transition:0.5s;
-  }
-  .fa-search-button{
-    color: orange;
   }
 .feature-header {
   text-align: center;
@@ -203,11 +201,7 @@ button:hover {
 .content p{
   display:inline-block;
 }
-.content div button:hover{
-     transition: 0.5s;
-     box-shadow: 0 7px 9px rgba(15, 15, 15, 0.2);
-     width: 100%;
-}
+
 /* ORDERS */
 .orders{
     width: 70%;
@@ -238,7 +232,7 @@ button:hover {
 }
 
 .accept{
-    background-color: rgb(191, 194, 1);;
+    background-color: rgb(191, 194, 1);
 }
 .decline{
     background-color:  rgb(230, 75, 3);;
@@ -294,7 +288,6 @@ footer h3{
 }
 
 @media (max-width:900px) {
-/* nav */
 /* navbar */
 .nav > .nav-btn {
     display: inline-block;
