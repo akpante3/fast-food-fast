@@ -1,69 +1,53 @@
-
-
 [![Coverage Status](https://coveralls.io/repos/github/akpante3/fast-food-fast/badge.svg?branch=ch-test-endpoints-%23160431153)](https://coveralls.io/github/akpante3/fast-food-fast?branch=ch-test-endpoints-%23160431153)
 [![Build Status](https://travis-ci.org/akpante3/fast-food-fast.svg?branch=ch-test-endpoints-%23160431153)](https://travis-ci.org/akpante3/fast-food-fast)
 
 
-# FAST-FOOD-FAST
-its an APP used for ordering fast food
-You can start app in [console](cd server npm start) 
+# fast-food-fast
+its an APP used for ordering fast food and with an admin control.
 
+## Table of Contents
+* [Tasks](#tasks)
+* [Features](#features)
+* [Installation and Setup](#installation-and-setup)
+* [Tests](#tests)
+* [Style](#style)
+* [Endpoints](#endpoints)
+* [Technologies and Frameworks](#technologies-and-frameworks)
+* [Author](#author)
 
-## Endpoints
+## Tasks
+ https://akpante3.github.io/fast-food-fast/
+ https://api-fast-food.herokuapp.com/api/v1/
+ 
+## Features
+.API endpoints for food orders
+.UI template
 
-- **[<code>GET</code>api/v1/orders]**
-- **[<code>GET</code> api/v1/orders/:id]**
-- **[<code>POST</code>api/v1/orders]**
-- **[<code>PUT</code>api/v1/orders/:id]**
+## Installation and Setup
+on[console]
+.cd server 
+.nmp install
+.nmp start
 
-## FAQ
-### What do I need to know before I start using the APP?
-its is efficient and can be consumed for ordering fast food
+## Tests
+npm test
 
-### How do I connect to the this API?
-
-
-### What return formats do you support?
-fast-food-fast currently returns data in [JSON](http://json.org/ "JSON") format.
-
-### What kind of authentication is required?
-N/A
-
-### Is there a request rate limit?
-N/A
-=======
-
-[![Coverage Status](https://coveralls.io/repos/github/akpante3/fast-food-fast/badge.svg?branch=ch-test-endpoints-%23160431153)](https://coveralls.io/github/akpante3/fast-food-fast?branch=ch-test-endpoints-%23160431153)
-[![Build Status](https://travis-ci.org/akpante3/fast-food-fast.svg?branch=ch-test-endpoints-%23160431153)](https://travis-ci.org/akpante3/fast-food-fast)
-
-
-# FAST-FOOD-FAST
-its an APP used for ordering fast food
-You can start app in [console](cd server npm start) 
-
+## Style
+* Eslint
+* Airbnb
 
 ## Endpoints
-
 - **[<code>GET</code>api/v1/menu]**
 - **[<code>GET</code>api/v1/orders]**
 - **[<code>GET</code> api/v1/orders/:id]**
 - **[<code>POST</code>api/v1/orders]**
 - **[<code>PUT</code>api/v1/orders/:id]**
 
-## FAQ
-### What do I need to know before I start using the APP?
-its is efficient and can be consumed for ordering fast food
+## Technologies and Frameworks
+. HTML, 
+. CSS, 
+. NodeJs, 
 
-### How do I connect to the this API?
-cd server
-on console 'npm run'
-
-### What return formats do you support?
-fast-food-fast currently returns data in [JSON](http://json.org/ "JSON") format.
-
-### What kind of authentication is required?
-N/A
-
-### Is there a request rate limit?
-N/A
-
+## Author
+ akpante3
+<Your name here as a link to your git account>
