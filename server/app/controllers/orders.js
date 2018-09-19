@@ -102,6 +102,8 @@ const placeNewOrder = (foodId) => {
     foodId: result.foodId,
     id: Orders.length + 1,
     quantity: itemQuantity,
+    quantity: itemQuantity,
+    timeOrdered : date,
   };
   Orders.push(neworder);
   return Promise.resolve(neworder);
