@@ -1,4 +1,3 @@
-
 import {
   allOrders,
   getOne,
@@ -6,6 +5,7 @@ import {
   updateOrder,
   allfood,
 } from './../controllers/orders';
+
 
 /** Get all Orders
  * @param {strings}

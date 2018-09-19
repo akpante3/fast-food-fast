@@ -1,4 +1,3 @@
-
 import {
   Orders,
   menu,
@@ -43,6 +42,7 @@ const getOne = (id) => {
 const placeNewOrder = (foodId, quantity) => {
   const noFoodId = 'foodId or quantity was not found';
   const noResult = 'order was not found,please place valid order';
+  const  date = new Date();
 
   if (!foodId || !quantity) {
     return Promise.reject(noFoodId);
@@ -58,6 +58,8 @@ const placeNewOrder = (foodId, quantity) => {
     foodId: result.foodId,
     id: Orders.length + 1,
     quantity: itemQuantity,
+    quantity: itemQuantity,
+    timeOrdered : date,
   };
   Orders.push(neworder);
   return Promise.resolve(neworder);
