@@ -1,7 +1,18 @@
 const choose = Array.from(document.querySelectorAll('.choose'));
-// const addCart = Array.from(document.querySelectorAll('.add-cart'));
 const shoppingCart = document.querySelector('.shopping-cart-button');
 
+const toShoppingCart = (elem) => {
+    elem.parentElement.innerHTML=`<p>Quantity:</p>
+    <select class="select">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </select>
+  <br>
+  <button class="add-cart" onclick="addCart(this)"><i class="fas fa-shopping-cart fa-1x"></i>  add to cart</button>
+  `
+}
 const toggle_next= (elem) =>  {
     do{
         elem = elem.nextSibling;
