@@ -1,0 +1,10 @@
+before_script: 
+- cd server
+- npm install codeclimate-test-reporter istanbul -g
+language: node_js
+node_js:
+   - "stable"
+ 
+script:
+  - npm install && npm run test
+  - npm run coverage
