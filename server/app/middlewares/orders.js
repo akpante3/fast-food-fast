@@ -22,6 +22,7 @@ const getAllOrders = (req, res) => {
   }).catch((message) => res.status(404).send({
     status: 'failure',
     message
+
   }));
 };
 /** Get menu

@@ -4,7 +4,6 @@ before_script:
 language: node_js
 node_js:
    - "stable"
- 
 script:
   - npm install && npm run test
   - npm run coverage

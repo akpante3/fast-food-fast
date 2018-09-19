@@ -56,6 +56,7 @@ describe('POST /api/v1/orders', () => {
     quantity: 6,
   };
 
+
   it('it should post order successfully when all criterials are meet', (done) => {
     request(app)
       .post('/api/v1/orders')
@@ -67,6 +68,7 @@ describe('POST /api/v1/orders', () => {
       })
       .end(done);
   });
+
 
   it('it should return a 404  when order is not found', (done) => {
     const item = {
