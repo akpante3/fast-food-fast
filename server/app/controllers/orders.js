@@ -12,7 +12,7 @@ const allOrders = () => {
   if (Orders.length !== 0) {
     return Promise.resolve(Orders);
   }
-  return Promise.reject();
+  return Promise.reject('No order was found');
 };
 
 /** Get menu

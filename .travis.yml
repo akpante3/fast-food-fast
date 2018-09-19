@@ -4,9 +4,6 @@ before_script:
 language: node_js
 node_js:
    - "stable"
-addons:
-   code_climate:
-     repo_token: a315018021e648cae168bcf040a0809f041d9806
 script:
   - npm install && npm run test
   - npm run coverage

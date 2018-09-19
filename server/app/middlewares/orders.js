@@ -19,9 +19,10 @@ const getAllOrders = (req, res) => {
       message: 'orders were fetched succcessfully',
       data: orders,
     });
-  }).catch(() => res.status(404).send({
+  }).catch((message) => res.status(404).send({
     status: 'failure',
-    message: 'no order has been made',
+    message
+
   }));
 };
 /** Get menu

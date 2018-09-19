@@ -10,7 +10,7 @@ import {
 
 
 describe('GET /api/v1/menu', () => {
-  it('should return menu of avaliable food', (done) => {
+  it('should return menu of all avaliable food', (done) => {
     request(app)
       .get('/api/v1/menu')
       .set('Accept', 'application/json')
@@ -24,7 +24,7 @@ describe('GET /api/v1/menu', () => {
 });
 
 describe('GET /api/v1/orders', () => {
-  it('should return a 404 no order has been made', (done) => {
+  it('should return a 404 when no order is found', (done) => {
     request(app)
       .get('/api/v1/orders')
       .expect(404)
@@ -56,7 +56,8 @@ describe('POST /api/v1/orders', () => {
     quantity: 6,
   };
 
-  it('it should post order successfully', (done) => {
+
+  it('it should post order successfully when all criterials are meet', (done) => {
     request(app)
       .post('/api/v1/orders')
       .send(data)
@@ -68,7 +69,8 @@ describe('POST /api/v1/orders', () => {
       .end(done);
   });
 
-  it('it should return a 404 "not found"', (done) => {
+
+  it('it should return a 404  when order is not found', (done) => {
     const item = {
       foodId: 700,
       quantity: 7,
@@ -91,7 +93,7 @@ describe('POST /api/v1/orders', () => {
 });
 
 describe('GET /api/v1/orders/:id', () => {
-  it('should fetch an order', (done) => {
+  it('should fetch an order when the id is found', (done) => {
     const order = {
       food: 'meat pie',
       id: 65,
@@ -112,7 +114,7 @@ describe('GET /api/v1/orders/:id', () => {
   });
 
 
-  it(' order should not be found', (done) => {
+  it(' order should not be found if the id is not valid', (done) => {
     request(app)
       .get('/api/v1/orders/dfghuy')
       .set('Accept', 'application/json')
