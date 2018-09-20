@@ -16,8 +16,8 @@ its an APP used for ordering fast food and with an admin control.
 * [Author](#author)
 
 ## Tasks
- git-pages: https://akpante3.github.io/fast-food-fast/
- heroku: https://api-fast-food.herokuapp.com/api/v1/
+ -git-pages: https://akpante3.github.io/fast-food-fast/
+ -heroku: https://api-fast-food.herokuapp.com/api/v1/
  
 ## Features
 .API endpoints for food orders
@@ -47,7 +47,7 @@ npm test
 - **[<code>GET</code>api/v1/menu]** to get the food menu(list of avaliable food)
 
 - **[<code>POST</code>api/v1/orders]**
-     required data:{
+     -required data:{
         foodId: 1, number *from the food menu, <code>GET</code>api/v1/menu to see food menu*
         quantity: 6, number
       };
