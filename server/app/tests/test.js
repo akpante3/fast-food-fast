@@ -129,7 +129,7 @@ describe('GET /api/v1/orders/:id', () => {
 //  PUT orders
 describe('PUT /api/v1/orders/:id', () => {
   const status = { status: 'complete' };
-  it('should update status of an order', (done) => {
+  it('should update status of an order when all criterials are meet', (done) => {
     const order = {
       food: 'meat pie',
       id: 988,
@@ -150,7 +150,7 @@ describe('PUT /api/v1/orders/:id', () => {
       });
   });
 
-  it('order should not be found', (done) => {
+  it('order should not be found when id is incorrect', (done) => {
     request(app)
       .put('/api/v1/orders/dfghuy')
       .send(status)
@@ -165,7 +165,7 @@ describe('PUT /api/v1/orders/:id', () => {
       });
   });
 
-  it('status was not found', (done) => {
+  it('response should be 404 when status is not found', (done) => {
     request(app)
       .put('/api/v1/orders/988')
       .send({})
