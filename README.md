@@ -43,6 +43,28 @@ npm test
 - **[<code>POST</code>api/v1/orders]**
 - **[<code>PUT</code>api/v1/orders/:id]**
 
+## How to run on POSTMAN
+- **[<code>GET</code>api/v1/menu]** to get the food menu(list of avaliable food)
+
+- **[<code>POST</code>api/v1/orders]**
+     required data:{
+        foodId: 1, number *from the food menu, <code>GET</code>api/v1/menu to see food menu*
+        quantity: 6, number
+      };
+  
+ - **[<code>GET</code>api/v1/orders]** get the orders that have been made.
+ 
+ - **[<code>PUT</code>api/v1/orders/:id]**  
+      required data:
+       - params.id should be the orders 'id' from the orders list, <code>GET</code>api/v1/orders to see list 
+       - eg {
+        status:'completed'
+         };
+
+- **[<code>GET</code> api/v1/orders/:id]**
+    required data:
+      - params.id should be the orders 'id' from the orders list, <code>GET</code>api/v1/orders to see list 
+
 ## Technologies and Frameworks
 . HTML, 
 . CSS, 
