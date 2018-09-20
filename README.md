@@ -46,8 +46,7 @@ npm test
 ## How to run on POSTMAN
 - **[<code>GET</code>api/v1/menu]** to get the food menu(list of avaliable food)
 
-- **[<code>POST</code>api/v1/orders]**
-<br />
+- **[<code>POST</code>api/v1/orders]**<br />
      -required data:{
      <br />
         foodId: 1, number *from the food menu, <code>GET</code>api/v1/menu to see food menu*
