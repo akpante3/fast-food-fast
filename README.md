@@ -49,19 +49,19 @@ npm test
 
 - **[<code>POST</code>api/v1/orders]**<br/>
     required data:{<br/>
-      foodId:1, number *id from the food menu,go to <code>GET</code>api/v1/menu to get foodIds*<br/>
-      quantity:12, number<br/>
+      foodId:1, *number, id from the food menu,go to <code>GET</code>api/v1/menu to get foodIds*<br/>
+      quantity:12, *number*<br/>
      }<br/>
      
 - **[<code>GET</code>api/v1/orders]** get all orders that have been posted on the app<br/>
 
 - **[<code>GET</code> api/v1/orders/:id]** get a particular order<br/>
     required data:<br/>
-      -id.params is the order id,<code>GET</code>api/v1/orders to see all orders and ids
+      -id.params is the order id,*<code>GET</code>api/v1/orders* to see all orders and ids
       
 - **[<code>PUT</code>api/v1/orders/:id]**<br/>
      required data:<br/>
-        -id.params is the order id,<code>GET</code>api/v1/orders to see all orders and ids<br/>
+        -id.params is the order id,*<code>GET</code>api/v1/orders* to see all orders and ids<br/>
         -{ status : 'completed'}
 
  
