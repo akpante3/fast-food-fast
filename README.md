@@ -16,8 +16,8 @@ its an APP used for ordering fast food and with an admin control.
 * [Author](#author)
 
 ## Tasks
- https://akpante3.github.io/fast-food-fast/
- https://api-fast-food.herokuapp.com/api/v1/
+ git-pages: https://akpante3.github.io/fast-food-fast/
+ heroku: https://api-fast-food.herokuapp.com/api/v1/
  
 ## Features
 .API endpoints for food orders
