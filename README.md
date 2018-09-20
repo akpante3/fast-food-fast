@@ -47,16 +47,22 @@ npm test
 - **[<code>GET</code>api/v1/menu]** to get the food menu(list of avaliable food)
 
 - **[<code>POST</code>api/v1/orders]**
+<br />
      -required data:{
+     <br />
         foodId: 1, number *from the food menu, <code>GET</code>api/v1/menu to see food menu*
+        <br />
         quantity: 6, number
+        <br />
       };
   
  - **[<code>GET</code>api/v1/orders]** get the orders that have been made.
  
- - **[<code>PUT</code>api/v1/orders/:id]**  
+ - **[<code>PUT</code>api/v1/orders/:id]** 
+ <br />
       required data:
-       - params.id should be the orders 'id' from the orders list, <code>GET</code>api/v1/orders to see list 
+      <br />
+       - params.id should be the orders 'id' from the orders list, <code>GET</code>api/v1/orders to see list <br />
        - eg {
         status:'completed'
          };
