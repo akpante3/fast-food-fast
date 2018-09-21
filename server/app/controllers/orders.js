@@ -1,93 +1,97 @@
 import {
-  Orders,
-  menu,
-} from '../db/dbconnect';
-
-
-/** Get all Orders
- * @return {object}
+  menuDb,
+  newfoodDb,
+  postOrdersDb,
+  getAllDb,
+  getOneDb,
+  userOrdersDb,
+  statusDb
+} from '../db/ordersDb';
+/** Get menu
+ * @return {obj} array of food
  * @public
 */
-const allOrders = () => {
-  if (Orders.length !== 0) {
-    return Promise.resolve(Orders);
-  }
-  return Promise.reject('No order was found');
+const menu = () => {
+  return menuDb().then((data) => {
+    return Promise.resolve(data);
+  });
 };
 
-/** Get menu
- * @return {object}
+/**  POST new  food
+ *  @param {string} food
+ *  @param {string} price
+ * @param {string} image
+ * @return {obj} new food
  * @public
 */
-const allfood = () => Promise.resolve(menu);
-
-/** Get an order
- * @param {string}
- * @return {object}
+const newFood = (food, price, image) => {
+  return newfoodDb(food, price, image).then((data) => {
+    return Promise.resolve(data);
+  });
+};
+/**  POST an order
+ * @param {string} ordered
+ * @param {string} userId
+ * @return {obj} an containing order details
+ * @public
+*/
+const postOrders = (ordered, userId) => {
+  return postOrdersDb(ordered, userId).then((data) => {
+    return Promise.resolve(data);
+  }).catch((data) => {
+    return Promise.reject(data);
+  });
+};
+/**  Get all order
+ * @param {string} username
+ * @return {obj} order data
+ * @public
+*/
+const getAll = (username) => {
+  return getAllDb(username).then((data) => {
+    return Promise.resolve(data);
+  });
+};
+/**  Get one order
+ * @param {string} id
+ * @return {obj} order data
  * @public
 */
 const getOne = (id) => {
-  const orderId = parseInt(id, 10);
-  const result = Orders.find(order => order.id === orderId);
-  if (!result) {
+  return getOneDb(id).then((data) => {
+    return Promise.resolve(data);
+  }).catch(() => {
     return Promise.reject();
-  }
-  return Promise.resolve(result);
+  });
 };
-/** place new Order
- * @param {string}
- * @return {object}
+/**  Get all orders by user
+ * @param {string} id
+ * @param {string} userid
+ * @return {obj} order data
  * @public
 */
-const placeNewOrder = (foodId, quantity) => {
-  const noFoodId = 'foodId or quantity was not found';
-  const noResult = 'order was not found,please place valid order';
-  const  date = new Date();
-
-  if (!foodId || !quantity) {
-    return Promise.reject(noFoodId);
-  }
-  const item = parseInt(foodId, 10);
-  const itemQuantity = parseInt(quantity, 10);
-  const result = menu.find(order => order.foodId === item);
-  if (!result) {
-    return Promise.reject(noResult);
-  }
-  const neworder = {
-    food: result.food,
-    foodId: result.foodId,
-    id: Orders.length + 1,
-    quantity: itemQuantity,
-    quantity: itemQuantity,
-    timeOrdered : date,
-  };
-  Orders.push(neworder);
-  return Promise.resolve(neworder);
+const userOrders = (id) => {
+  return userOrdersDb(id).then((data) => {
+    return Promise.resolve(data);
+  }).catch(() => {
+    return Promise.reject();
+  });
 };
-/** update Order
- * @param {strings}
- * @return {object}
+/** PUT update status
+ * @param {string} orderId
+ * @param {string} statusUpdate
+ * @return {obj} order data
  * @public
 */
-const updateOrder = (id, status) => {
-  const notFound = 'order was not found';
-  const noStatus = 'status was not found,please input status';
-  if (!status) {
-    return Promise.reject(noStatus);
+const status = (orderId, statusUpdate) => {
+  const reject = 'order was not updated';
+  if (!(statusUpdate === 'completed' || statusUpdate === 'accepted' || statusUpdate === 'declined' || !statusUpdate)) {
+    return Promise.reject(new Error('invalid status update, status should be completed, accepted or declined'));
   }
-  const orderId = parseInt(id, 10);
-  const result = Orders.find(order => order.id === orderId);
-  if (!result) {
-    return Promise.reject(notFound);
-  }
-  result.status = status;
-  return Promise.resolve(result);
+  return statusDb(orderId, statusUpdate).then((data) => {
+    return Promise.resolve(data);
+  }).catch(() => {
+    return Promise.reject(reject);
+  });
 };
-
-export {
-  allOrders,
-  getOne,
-  placeNewOrder,
-  updateOrder,
-  allfood,
-};
+export { menu, newFood, postOrders, getOne, getAll, userOrders, status };

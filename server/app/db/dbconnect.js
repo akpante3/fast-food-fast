@@ -1,29 +1,19 @@
-const Orders = [];
+import promise from 'bluebird';
+import path from 'path';
+import pgp, { QueryFile } from 'pg-promise';
+import env from '../config';
 
-const menu = [
-  {
-    food: 'fried chicken',
-    foodId: 1,
-  },
-  {
-    food: 'burger',
-    foodId: 2,
-  },
-  {
-    food: 'meat pie',
-    foodId: 3,
-  },
-  {
-    food: 'pizza',
-    foodId: 4,
-  },
-  {
-    food: 'roasted chicken',
-    foodId: 5,
-  },
-];
-
-export {
-  Orders,
-  menu,
+const options = {
+  promiseLib: promise,
 };
+
+const pg = pgp(options);
+const connectionString = env.DATABASE_URL;
+const db = pg(connectionString);
+const scriptPath = path.join(__dirname, 'schema.sql');
+
+const file = new QueryFile(scriptPath);
+
+db.none(file)
+  .then(() => console.log('successfully created dabatase'));
+export { db, pgp };
