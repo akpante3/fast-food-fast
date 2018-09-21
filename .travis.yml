@@ -1,9 +1,17 @@
+postgres:
+  adapter: postgresql
+  database: orderstestdb
+  username: postgres
 before_script: 
 - cd server
 - npm install codeclimate-test-reporter istanbul -g
+- "psql -c 'create database orderstestdb;' -U postgres"
+
 language: node_js
 node_js:
    - "stable"
 script:
   - npm install && npm run test
   - npm run coverage
+env:
+  - JWT_SECRET=niusjatehniklasntm489we5iu09
