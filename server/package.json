@@ -4,7 +4,7 @@
   "description": "fast food app",
   "main": "app.js",
   "scripts": {
-    "test": "nyc --require babel-core/register mocha app/**/*test.js --exit",
+    "test": "nyc --require babel-core/register mocha app/**/*test.test.js --exit",
     "start": "node --require babel-core/register app.js ",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "build": "mkdir dist && babel server -s -d dist"
