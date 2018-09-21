@@ -4,10 +4,9 @@ import request from 'supertest';
 import app from './../../app';
 
 import {
-  Orders,
   menu,
+  Orders,
 } from '../db/dbconnect';
-
 
 describe('GET /api/v1/menu', () => {
   it('should return menu of all avaliable food', (done) => {
@@ -24,19 +23,7 @@ describe('GET /api/v1/menu', () => {
 });
 
 describe('GET /api/v1/orders', () => {
-  it('should return a 404 when no order is found', (done) => {
-    request(app)
-      .get('/api/v1/orders')
-      .expect(404)
-      .end(done);
-  });
-
   it('respond with json containing a list of all orders', (done) => {
-    const data = {
-      foodId: 2,
-      quantity: 7,
-    };
-    Orders.push(data);
     request(app)
       .get('/api/v1/orders')
       .set('Accept', 'application/json')
@@ -51,16 +38,17 @@ describe('GET /api/v1/orders', () => {
 
 
 describe('POST /api/v1/orders', () => {
-  const data = {
-    foodId: 1,
-    quantity: 6,
-  };
-
-  it('it should post order successfully when all criterials are meet', (done) => {
+  it(`it should post order successfully when all
+   criterials are meet `, (done) => {
+    const data = {
+      orders:
+      [{ foodId: '1', quantity: '12' },
+        { foodId: '2', quantity: '67' }]
+    };
     request(app)
       .post('/api/v1/orders')
       .send(data)
-      .expect(200)
+      .expect(201)
       .expect((res) => {
         expect(res.body.status === 'success');
         expect(200);
@@ -68,24 +56,30 @@ describe('POST /api/v1/orders', () => {
       .end(done);
   });
 
-  it('it should return a 404  when order is not found', (done) => {
-    const item = {
-      foodId: 700,
-      quantity: 7,
+  it('it should return a 400  when order is not found', (done) => {
+    const data = {
+      orders:
+      [{ foodId: 'retg', quantity: '12' },
+        { foodId: '2', quantity: '67' }]
     };
     request(app)
       .post('/api/v1/orders')
-      .send(item)
+      .send(data)
       .set('Accept', 'application/json')
-      .expect(404)
+      .expect(400)
       .end(done);
   });
 
   it('it should not place an order when data is empty', (done) => {
+    const data = {
+      orders:
+      [{ foodId: 'retg', quantity: '12' },
+        { quantity: '67' }]
+    };
     request(app)
       .post('/api/v1/orders')
-      .send({})
-      .expect(404)
+      .send(data)
+      .expect(400)
       .end(done);
   });
 });
@@ -128,21 +122,34 @@ describe('GET /api/v1/orders/:id', () => {
 });
 //  PUT orders
 describe('PUT /api/v1/orders/:id', () => {
-  const status = { status: 'complete' };
-  it('should update status of an order when all criterials are meet', (done) => {
-    const order = {
-      food: 'meat pie',
-      id: 988,
-      foodId: 12,
-    };
-    Orders.push(order);
+  const status = { status: 'completed' };
+  it(
+    'should update status of an order when all criterials are meet',
+    (done) => {
+      request(app)
+        .put('/api/v1/orders/2')
+        .send(status)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.status === 'success');
+          expect(res.body.data.status === status);
+        })
+        .end((err) => {
+          if (err) return done(err);
+          return done();
+        });
+    }
+  );
+
+
+  it('order should be an invalid request', (done) => {
     request(app)
-      .put('/api/v1/orders/988')
+      .put('/api/v1/orders/dfghuy')
       .send(status)
       .set('Accept', 'application/json')
-      .expect(200)
+      .expect(400)
       .expect((res) => {
-        expect(res.body.status === 'success');
+        expect(res.body.status === 'failure');
       })
       .end((err) => {
         if (err) return done(err);
@@ -150,12 +157,13 @@ describe('PUT /api/v1/orders/:id', () => {
       });
   });
 
-  it('order should not be found when id is incorrect', (done) => {
+  it('order should be an invalid request', (done) => {
+    const stat = { status: 'code' };
     request(app)
-      .put('/api/v1/orders/dfghuy')
-      .send(status)
+      .put('/api/v1/orders/2')
+      .send(stat)
       .set('Accept', 'application/json')
-      .expect(404)
+      .expect(400)
       .expect((res) => {
         expect(res.body.status === 'failure');
       })
@@ -170,7 +178,7 @@ describe('PUT /api/v1/orders/:id', () => {
       .put('/api/v1/orders/988')
       .send({})
       .set('Accept', 'application/json')
-      .expect(404)
+      .expect(400)
       .expect((res) => {
         expect(res.body.status === 'failure');
       })
@@ -180,4 +188,3 @@ describe('PUT /api/v1/orders/:id', () => {
       });
   });
 });
-

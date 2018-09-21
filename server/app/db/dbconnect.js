@@ -1,4 +1,27 @@
-const Orders = [];
+const shoppingCarts = [];
+
+const Orders = [
+  {
+    id: 1,
+    orders: [
+      {
+        timeOrdered: '2018-09-20T20:15:22.360Z',
+        foodId: 2,
+        quantity: 7,
+      },
+      {
+        timeOrdered: '2018-09-20T20:15:22.360Z',
+        foodId: 2,
+        quantity: 7,
+      },
+      {
+        timeOrdered: '2018-09-20T20:15:22.360Z',
+        foodId: 2,
+        quantity: 7,
+      }
+    ]
+  },
+];
 
 const menu = [
   {
@@ -26,4 +49,5 @@ const menu = [
 export {
   Orders,
   menu,
+  shoppingCarts,
 };

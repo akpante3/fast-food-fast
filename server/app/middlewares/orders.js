@@ -5,11 +5,13 @@ import {
   updateOrder,
   allfood,
 } from './../controllers/orders';
+import { shoppingCarts } from '../db/dbconnect';
 
 
-/** Get all Orders
- * @param {strings}
- * @return {object}
+/** Get menu
+ * @param {string} req is the request parameter
+ * @param {string} res is the response parameter
+ * @return {object} the response object
  * @public
 */
 const getAllOrders = (req, res) => {
@@ -19,14 +21,12 @@ const getAllOrders = (req, res) => {
       message: 'orders were fetched succcessfully',
       data: orders,
     });
-  }).catch((message) => res.status(404).send({
-    status: 'failure',
-    message
-  }));
+  });
 };
 /** Get menu
- * @param {strings}
- * @return {object}
+ * @param {string} req is the request parameter
+ * @param {string} res is the response parameter
+ * @return {object} the response object
  * @public
 */
 const getAllFood = (req, res) => {
@@ -36,14 +36,12 @@ const getAllFood = (req, res) => {
       message: 'orders were fetched succcessfully',
       data: orders,
     });
-  }).catch(() => res.status(404).send({
-    status: 'failure',
-    message: 'Orders were not found',
-  }));
+  });
 };
-/** Get one  order
- * @param {strings}
- * @return {object}
+/** Get menu
+ * @param {string} req is the request parameter
+ * @param {string} res is the response parameter
+ * @return {object} the response object
  * @public
 */
 const getOneOrder = (req, res) => {
@@ -60,28 +58,31 @@ const getOneOrder = (req, res) => {
     });
   });
 };
-/** post New order
- * @param {strings}
- * @return {object}
+/** Get menu
+ * @param {string} req is the request parameter
+ * @param {string} res is the response parameter
+ * @return {object} the response object
  * @public
 */
 const postNewOrder = (req, res) => {
-  placeNewOrder(req.body.foodId, req.body.quantity).then((order) => {
-    res.send({
+  placeNewOrder(req.body).then((order) => {
+    res.status(201).send({
       status: 'success',
       message: 'order was placed succcessfully',
       data: order,
     });
+    shoppingCarts.splice(0);
   }).catch((message) => {
-    res.status(404).send({
+    res.status(400).send({
       status: 'failure',
       message,
     });
   });
 };
-/** Update order status
- * @param {strings}
- * @return {object}
+/** Get menu
+ * @param {string} req is the request parameter
+ * @param {string} res is the response parameter
+ * @return {object} the response object
  * @public
 */
 const orderUpdate = (req, res) => {
@@ -92,7 +93,7 @@ const orderUpdate = (req, res) => {
       data: order,
     });
   }).catch((message) => {
-    res.status(404).send({
+    res.status(400).send({
       status: 'failure',
       message,
     });

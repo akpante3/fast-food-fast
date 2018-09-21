@@ -5,26 +5,19 @@ import {
 
 
 /** Get all Orders
- * @return {object}
+ * @return {object} a list of all orders that have been made
  * @public
 */
-const allOrders = () => {
-  if (Orders.length !== 0) {
-    return Promise.resolve(Orders);
-  }
-  return Promise.reject('No order was found');
-};
+const allOrders = () => Promise.resolve(Orders);
 
 /** Get menu
- * @return {object}
- * @public
+ * @return {object} the list of avalaible food
 */
 const allfood = () => Promise.resolve(menu);
 
 /** Get an order
- * @param {string}
- * @return {object}
- * @public
+ * @param {number} id of particular order
+ * @return {object} the order and its properties
 */
 const getOne = (id) => {
   const orderId = parseInt(id, 10);
@@ -35,50 +28,64 @@ const getOne = (id) => {
   return Promise.resolve(result);
 };
 /** place new Order
- * @param {string}
- * @return {object}
+ * @param {string}  order avaliable food
+ * @param {string} quantity of order
+ * @return {object} the new order and its properties
  * @public
 */
-const placeNewOrder = (foodId, quantity) => {
-  const noFoodId = 'foodId or quantity was not found';
-  const noResult = 'order was not found,please place valid order';
-  const  date = new Date();
+const placeNewOrder = (order) => {
+  const noFoodId = 'invalid order ID or quantity,please input valid values';
+  const date = new Date();
+  const { orders } = order;
+  const decline = [];
 
-  if (!foodId || !quantity) {
+  orders.forEach((elem) => {
+    if (!elem.foodId || !elem.quantity) {
+      decline.push(elem);
+    }
+    const orderId = parseInt(elem.foodId, 10);
+    const item = menu.find(food => food.foodId === orderId);
+
+    if (!item) {
+      decline.push(elem);
+    }
+  });
+
+  if (!(decline.length === 0)) {
+    console.log(decline.length);
     return Promise.reject(noFoodId);
   }
-  const item = parseInt(foodId, 10);
-  const itemQuantity = parseInt(quantity, 10);
-  const result = menu.find(order => order.foodId === item);
-  if (!result) {
-    return Promise.reject(noResult);
-  }
   const neworder = {
-    food: result.food,
-    foodId: result.foodId,
     id: Orders.length + 1,
-    quantity: itemQuantity,
-    quantity: itemQuantity,
-    timeOrdered : date,
+    timeOrdered: date,
+    orders,
   };
+
   Orders.push(neworder);
   return Promise.resolve(neworder);
 };
+
 /** update Order
- * @param {strings}
- * @return {object}
+ * @param {string} paramsId of order
+ * @param {string} status of order to be updated
+ * @return {object} updated
  * @public
 */
-const updateOrder = (id, status) => {
-  const notFound = 'order was not found';
+const updateOrder = (paramsId, status) => {
   const noStatus = 'status was not found,please input status';
+  const inValid = 'id is invalid,put a id Number';
+  const invalidStatus = `status is invalid, input completed, accepted or 
+  decline`;
   if (!status) {
     return Promise.reject(noStatus);
   }
-  const orderId = parseInt(id, 10);
+  const orderId = parseInt(paramsId, 10);
   const result = Orders.find(order => order.id === orderId);
   if (!result) {
-    return Promise.reject(notFound);
+    return Promise.reject(inValid);
+  }
+  if (!(status === 'completed' || status === 'decline' || status === 'accepted')) {
+    return Promise.reject(invalidStatus);
   }
   result.status = status;
   return Promise.resolve(result);
