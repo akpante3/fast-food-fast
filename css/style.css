@@ -131,6 +131,16 @@ button:hover {
     transition: 0.5s;
     box-shadow: 0 7px 9px rgba(15, 15, 15, 0.5);
 }
+button:focus{
+  text-decoration: none;
+  border: none; 
+  outline: 0; 
+}
+ a:focus{
+  text-decoration: none;
+  border: none;
+
+}
 
 .cancelbtn, .signupbtn, {
   float: left;
@@ -234,6 +244,9 @@ button:hover {
 }
 
 /* ORDERS */
+.welcome-note p{
+    color:rgb(255, 135, 66);
+}
 .orders{
     width: 70%;
     border-radius: 20px;
