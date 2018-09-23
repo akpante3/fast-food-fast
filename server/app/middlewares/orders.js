@@ -5,6 +5,7 @@ import {
   updateOrder,
   allfood,
 } from './../controllers/orders';
+import { shoppingCarts } from '../db/dbconnect';
 
 
 /** Get menu
@@ -64,12 +65,13 @@ const getOneOrder = (req, res) => {
  * @public
 */
 const postNewOrder = (req, res) => {
-  placeNewOrder(req.body.foodId, req.body.quantity).then((order) => {
+  placeNewOrder(req.body).then((order) => {
     res.status(201).send({
       status: 'success',
       message: 'order was placed succcessfully',
       data: order,
     });
+    shoppingCarts.splice(0);
   }).catch((message) => {
     res.status(400).send({
       status: 'failure',

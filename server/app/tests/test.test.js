@@ -24,11 +24,6 @@ describe('GET /api/v1/menu', () => {
 
 describe('GET /api/v1/orders', () => {
   it('respond with json containing a list of all orders', (done) => {
-    const data = {
-      foodId: 2,
-      quantity: 7,
-    };
-    Orders.push(data);
     request(app)
       .get('/api/v1/orders')
       .set('Accept', 'application/json')
@@ -43,13 +38,13 @@ describe('GET /api/v1/orders', () => {
 
 
 describe('POST /api/v1/orders', () => {
-  const data = {
-    foodId: 1,
-    quantity: 6,
-  };
-
   it(`it should post order successfully when all
    criterials are meet `, (done) => {
+    const data = {
+      orders:
+      [{ foodId: '1', quantity: '12' },
+        { foodId: '2', quantity: '67' }]
+    };
     request(app)
       .post('/api/v1/orders')
       .send(data)
@@ -61,23 +56,29 @@ describe('POST /api/v1/orders', () => {
       .end(done);
   });
 
-  it('it should return a 404  when order is not found', (done) => {
-    const item = {
-      foodId: 700,
-      quantity: 7,
+  it('it should return a 400  when order is not found', (done) => {
+    const data = {
+      orders:
+      [{ foodId: 'retg', quantity: '12' },
+        { foodId: '2', quantity: '67' }]
     };
     request(app)
       .post('/api/v1/orders')
-      .send(item)
+      .send(data)
       .set('Accept', 'application/json')
       .expect(400)
       .end(done);
   });
 
   it('it should not place an order when data is empty', (done) => {
+    const data = {
+      orders:
+      [{ foodId: 'retg', quantity: '12' },
+        { quantity: '67' }]
+    };
     request(app)
       .post('/api/v1/orders')
-      .send({})
+      .send(data)
       .expect(400)
       .end(done);
   });

@@ -1,25 +1,26 @@
+const shoppingCarts = [];
+
 const Orders = [
   {
-    food: 'burger',
-    foodId: 2,
     id: 1,
-    quantity: 7,
-    timeOrdered: '2018-09-20T20:15:22.360Z',
+    orders: [
+      {
+        timeOrdered: '2018-09-20T20:15:22.360Z',
+        foodId: 2,
+        quantity: 7,
+      },
+      {
+        timeOrdered: '2018-09-20T20:15:22.360Z',
+        foodId: 2,
+        quantity: 7,
+      },
+      {
+        timeOrdered: '2018-09-20T20:15:22.360Z',
+        foodId: 2,
+        quantity: 7,
+      }
+    ]
   },
-  {
-    food: 'burger',
-    foodId: 2,
-    id: 2,
-    quantity: 7,
-    timeOrdered: '2018-09-20T20:15:22.360Z',
-  },
-  {
-    food: 'burger',
-    foodId: 2,
-    id: 3,
-    quantity: 7,
-    timeOrdered: '2018-09-20T20:15:22.360Z',
-  }
 ];
 
 const menu = [
@@ -48,4 +49,5 @@ const menu = [
 export {
   Orders,
   menu,
+  shoppingCarts,
 };

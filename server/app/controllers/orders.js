@@ -28,35 +28,43 @@ const getOne = (id) => {
   return Promise.resolve(result);
 };
 /** place new Order
- * @param {string} foodId of the avaliable food
+ * @param {string}  order avaliable food
  * @param {string} quantity of order
  * @return {object} the new order and its properties
  * @public
 */
-const placeNewOrder = (foodId, quantity) => {
+const placeNewOrder = (order) => {
   const noFoodId = 'invalid order ID or quantity,please input valid values';
-  const noResult = 'invalid order,please place a valid order';
   const date = new Date();
+  const { orders } = order;
+  const decline = [];
 
-  if (!foodId || !quantity) {
+  orders.forEach((elem) => {
+    if (!elem.foodId || !elem.quantity) {
+      decline.push(elem);
+    }
+    const orderId = parseInt(elem.foodId, 10);
+    const item = menu.find(food => food.foodId === orderId);
+
+    if (!item) {
+      decline.push(elem);
+    }
+  });
+
+  if (!(decline.length === 0)) {
+    console.log(decline.length);
     return Promise.reject(noFoodId);
   }
-  const item = parseInt(foodId, 10);
-  const itemQuantity = parseInt(quantity, 10);
-  const result = menu.find(order => order.foodId === item);
-  if (!result) {
-    return Promise.reject(noResult);
-  }
   const neworder = {
-    food: result.food,
-    foodId: result.foodId,
     id: Orders.length + 1,
-    quantity: itemQuantity,
     timeOrdered: date,
+    orders,
   };
+
   Orders.push(neworder);
   return Promise.resolve(neworder);
 };
+
 /** update Order
  * @param {string} paramsId of order
  * @param {string} status of order to be updated
