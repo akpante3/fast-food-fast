@@ -8,10 +8,10 @@ before((done) => {
   done();
 });
 
-describe('GET /api/v1/auth/signup', () => {
+describe('POST /api/v1/auth/signup', () => {
   it('should sign up a user when all the avaliable data is complete', (done) => {
     const user = {
-      email: 'challenge@yahoo.com',
+      email: 'denmo@yahoo.com',
       username: 'akpante',
       password: '123456787',
       address: '10adenekan fadeyi'
@@ -19,19 +19,33 @@ describe('GET /api/v1/auth/signup', () => {
     request(app)
       .post('/api/v1/auth/signup')
       .send(user)
-      .expect(201)
-      .expect()
+      .expect(200)
       .end(() => {
         done();
       });
   });
 
+  it('should sign up a user when all the avaliable data is complete', (done) => {
+    const user = {
+      email: 'd@yahoo.com',
+      username: 'akpante23/..',
+      password: '123456787',
+      address: '10adenekan fadeyi'
+    };
+    request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .expect(400)
+      .end(() => {
+        done();
+      });
+  });
+
+
   it('should not create a user when email is incorrect', (done) => {
     const user = {
       email: 'susayahoo.com',
-      username: 'akpante',
       password: '123456787',
-      address: '10adenekan fadeyi'
     };
     request(app)
       .post('/api/v1/auth/signup')
@@ -41,11 +55,13 @@ describe('GET /api/v1/auth/signup', () => {
       .expect((res) => {
         expect(res.body.status === 'failure');
       })
-      .end(done);
+      .end(() => {
+        done();
+      });
   });
 
-  it(`it should not create a new user when
-   the signup data is not complete`, (done) => {
+  it(`it should not create a new user when the sign up 
+    properties are not complete`, (done) => {
     const user = {
       email: 'susan@yahoo.com',
       username: 'akpante',
