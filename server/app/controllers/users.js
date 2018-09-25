@@ -33,4 +33,26 @@ const createUser = (email, password, user, address) => {
     });
 };
 
-export default createUser;
+const login = (email, password) => db.one(`SELECT * FROM users 
+WHERE email =$1`, email)
+  .then((data) => {
+    const passwordIsValid = bcrypt.compareSync(password, data.password);
+    const token = jwt.sign({ id: data.id }, process.env.JWT_SECRET, {
+      expiresIn: 86400,
+    });
+    if (!passwordIsValid) {
+      return Promise.reject(Error);
+    }
+    const user = {
+      username: data.name,
+      email: data.email,
+      token
+    };
+
+    return Promise.resolve(user);
+  }).catch(e => Promise.reject(e));
+
+export {
+  createUser,
+  login
+};

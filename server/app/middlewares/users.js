@@ -1,4 +1,4 @@
-import createUser from './../controllers/users';
+import { createUser, login } from './../controllers/users';
 
 const newUsers = (req, res) => {
   const user = req.body.username.trim();
@@ -17,4 +17,21 @@ const newUsers = (req, res) => {
     });
 };
 
-export default newUsers;
+const logInUser = (req, res) => {
+  login(req.body.email, req.body.password).then((data) => {
+    res.status(200).send({
+      auth: true,
+      status: 'success',
+      message: 'login was succcessfully',
+      data,
+    });
+  }).catch(() => res.status(400).send({
+    status: 'failure',
+    message: 'users was not found',
+  }));
+};
+
+export {
+  newUsers,
+  logInUser
+};
