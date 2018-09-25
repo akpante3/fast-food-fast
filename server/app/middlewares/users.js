@@ -21,9 +21,9 @@ const logInUser = (req, res) => {
   login(req.body.email, req.body.password).then((token) => {
     res.status(200).send({
       auth: true,
-      token,
       status: 'success',
       message: 'login was succcessfully',
+      data: token
     });
   }).catch(() => res.status(400).send({
     status: 'failure',

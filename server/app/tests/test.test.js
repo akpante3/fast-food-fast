@@ -10,13 +10,14 @@ before((done) => {
   request(app)
     .post('/api/v1/auth/signup')
     .send({
-      email: 'ghn6gftyr@yahoo.com',
+      email: 'david@yahoo.com',
       username: 'foodamin',
       password: '123456787',
       address: '10adenekan fadeyi'
     })
     .end((err, res) => {
       token = res.body.data;// Or something
+      console.log(token, 'fgrhyujg==============================================================');
       done();
     });
 });
@@ -33,7 +34,10 @@ describe('POST /api/v1/auth/signup', () => {
       .post('/api/v1/auth/signup')
       .send(user)
       .expect(201)
-      .end(done);
+      .end(() => {
+        console.log(token, '==+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+        done();
+      });
   });
 
   it('should sign up a user when all the avaliable data is complete', (done) => {
@@ -171,3 +175,69 @@ describe('POST /api/v1/auth/login', () => {
   });
 });
 
+describe('POST /api/v1/menu', () => {
+  it('should post new food on the app', (done) => {
+    request(app)
+      .post('/api/v1/menu')
+      .set('accessToken', token)
+      .expect(201)
+      .expect((res) => {
+        expect(res.body.status === 'success');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should not post a meal with an invalid token', (done) => {
+    request(app)
+      .post('/api/v1/menu')
+      .set('accessToken', 'bgiugifbugbui')
+      .expect(201)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should not post food when token is not found', (done) => {
+    request(app)
+      .post('/api/v1/menu')
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+});
+
+describe('GET /api/v1/menu', () => {
+  it('should get the menu when user has a token', (done) => {
+    request(app)
+      .get('/api/v1/menu')
+      .set('accessToken', token)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+
+    it('should not get menu when token is not found', (done) => {
+      request(app)
+        .get('/api/v1/menu')
+        .expect(400)
+        .expect((res) => {
+          expect(res.body.status === 'failure');
+        })
+        .end(() => {
+          done();
+        });
+    });
+  });
+});

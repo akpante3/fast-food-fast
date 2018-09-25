@@ -17,3 +17,4 @@ const file = new QueryFile(scriptPath);
 db.none(file)
   .then(() => console.log('successfully created dabatase'));
 export default db;
+

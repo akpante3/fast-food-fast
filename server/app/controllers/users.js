@@ -37,6 +37,7 @@ WHERE email =$1`, email)
       return Promise.reject(Error);
     }
     const user = {
+      id: data.id,
       username: data.name,
       email: data.email,
       token
