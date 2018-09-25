@@ -1,189 +1,149 @@
 import expect from 'expect';
 import request from 'supertest';
-
 import app from './../../app';
+import db from '../db/dbconnect';
 
-import {
-  menu,
-  Orders,
-} from '../db/dbconnect';
-
-describe('GET /api/v1/menu', () => {
-  it('should return menu of all avaliable food', (done) => {
-    request(app)
-      .get('/api/v1/menu')
-      .set('Accept', 'application/json')
-      .expect(200)
-      .expect((res) => {
-        expect(res.body.data === menu);
-        expect(200);
-      })
-      .end(done);
-  });
+before((done) => {
+  db.query('DELETE FROM users');
+  done();
 });
 
-describe('GET /api/v1/orders', () => {
-  it('respond with json containing a list of all orders', (done) => {
-    const data = {
-      foodId: 2,
-      quantity: 7,
+describe('POST /api/v1/auth/signup', () => {
+  it('should sign up a user when all the avaliable data is complete', (done) => {
+    const user = {
+      email: 'denmo@yahoo.com',
+      username: 'akpante',
+      password: '123456787',
+      address: '10adenekan fadeyi'
     };
-    Orders.push(data);
     request(app)
-      .get('/api/v1/orders')
-      .set('Accept', 'application/json')
+      .post('/api/v1/auth/signup')
+      .send(user)
       .expect(200)
-      .expect((res) => {
-        expect(res.body.data === Orders);
-        expect(200);
-      })
-      .end(done);
-  });
-});
-
-
-describe('POST /api/v1/orders', () => {
-  const data = {
-    foodId: 1,
-    quantity: 6,
-  };
-
-  it(`it should post order successfully when all
-   criterials are meet `, (done) => {
-    request(app)
-      .post('/api/v1/orders')
-      .send(data)
-      .expect(201)
-      .expect((res) => {
-        expect(res.body.status === 'success');
-        expect(200);
-      })
-      .end(done);
+      .end(() => {
+        done();
+      });
   });
 
-  it('it should return a 404  when order is not found', (done) => {
-    const item = {
-      foodId: 700,
-      quantity: 7,
+  it('should sign up a user when all the avaliable data is complete', (done) => {
+    const user = {
+      email: 'd@yahoo.com',
+      username: 'akpante23/..',
+      password: '123456787',
+      address: '10adenekan fadeyi'
     };
     request(app)
-      .post('/api/v1/orders')
-      .send(item)
-      .set('Accept', 'application/json')
+      .post('/api/v1/auth/signup')
+      .send(user)
       .expect(400)
-      .end(done);
+      .end(() => {
+        done();
+      });
   });
 
-  it('it should not place an order when data is empty', (done) => {
+
+  it('should not create a user when email is incorrect', (done) => {
+    const user = {
+      email: 'susayahoo.com',
+      password: '123456787',
+    };
     request(app)
-      .post('/api/v1/orders')
-      .send({})
+      .post('/api/v1/auth/signup')
+      .set('Accept', 'application/json')
+      .send(user)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it(`it should not create a new user when the sign up 
+    properties are not complete`, (done) => {
+    const user = {
+      email: 'susan@yahoo.com',
+      username: 'akpante',
+      password: '123456787',
+    };
+    request(app)
+      .post('/api/v1/auth/signup')
+      .set('Accept', 'application/json')
+      .send(user)
       .expect(400)
       .end(done);
   });
 });
 
-describe('GET /api/v1/orders/:id', () => {
-  it('should fetch an order when the id is found', (done) => {
-    const order = {
-      food: 'meat pie',
-      id: 65,
-      foodId: 12,
+
+describe('POST /api/v1/auth/login', () => {
+  it('should log in a user when all the avaliable data is complete', (done) => {
+    const user = {
+      email: 'denmo@yahoo.com',
+      password: '123456787',
     };
-    Orders.push(order);
     request(app)
-      .get('/api/v1/orders/65')
-      .set('Accept', 'application/json')
+      .post('/api/v1/auth/login')
+      .send(user)
       .expect(200)
       .expect((res) => {
         expect(res.body.status === 'success');
       })
-      .end((err) => {
-        if (err) return done(err);
-        return done();
+      .end(() => {
+        done();
       });
   });
 
-
-  it(' order should not be found if the id is not valid', (done) => {
+  it('should not log in an in registered user, (done) => {
+    const user = {
+      email: 'challenge@yahoo.com',
+      password: 'ny67bt58',
+    };
     request(app)
-      .get('/api/v1/orders/dfghuy')
-      .set('Accept', 'application/json')
-      .expect(404)
+      .post('/api/v1/auth/login')
+      .send(user)
+      .expect(400)
       .expect((res) => {
         expect(res.body.status === 'failure');
       })
-      .end((err) => {
-        if (err) return done(err);
-        return done();
+      .end(() => {
+        done();
+      });
+  });
+
+  it('it should not log in when password is invalid', (done) => {
+    const user = {
+      email: 'denmo@yahoo.com',
+      password: 'akp',
+    };
+    request(app)
+      .post('/api/v1/auth/login')
+      .send(user)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('it should not log in a when email is invalid', (done) => {
+    const user = {
+      email: 'denmoyahoo.com',
+      password: '1234bt5ny6',
+    };
+    request(app)
+      .post('/api/v1/auth/login')
+      .send(user)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
       });
   });
 });
-//  PUT orders
-describe('PUT /api/v1/orders/:id', () => {
-  const status = { status: 'completed' };
-  it(
-    'should update status of an order when all criterials are meet',
-    (done) => {
-      request(app)
-        .put('/api/v1/orders/2')
-        .send(status)
-        .expect(200)
-        .expect((res) => {
-          expect(res.body.status === 'success');
-          expect(res.body.data.status === status);
-        })
-        .end((err) => {
-          if (err) return done(err);
-          return done();
-        });
-    }
-  );
 
-
-  it('order should be an invalid request', (done) => {
-    request(app)
-      .put('/api/v1/orders/dfghuy')
-      .send(status)
-      .set('Accept', 'application/json')
-      .expect(400)
-      .expect((res) => {
-        expect(res.body.status === 'failure');
-      })
-      .end((err) => {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it('order should be an invalid request', (done) => {
-    const stat = { status: 'code' };
-    request(app)
-      .put('/api/v1/orders/2')
-      .send(stat)
-      .set('Accept', 'application/json')
-      .expect(400)
-      .expect((res) => {
-        expect(res.body.status === 'failure');
-      })
-      .end((err) => {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it('response should be 404 when status is not found', (done) => {
-    request(app)
-      .put('/api/v1/orders/988')
-      .send({})
-      .set('Accept', 'application/json')
-      .expect(400)
-      .expect((res) => {
-        expect(res.body.status === 'failure');
-      })
-      .end((err) => {
-        if (err) return done(err);
-        return done();
-      });
-  });
-});
