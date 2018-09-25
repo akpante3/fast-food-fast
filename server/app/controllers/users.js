@@ -22,14 +22,7 @@ const createUser = (email, password, user, address) => {
           expiresIn: 86400,
         }
       );
-      return Promise.resolve({
-        id: data.id,
-        email: data.email,
-        name: data.name,
-        address: data.address,
-        token,
-
-      });
+      return Promise.resolve(token);
     });
 };
 
@@ -44,6 +37,7 @@ WHERE email =$1`, email)
       return Promise.reject(Error);
     }
     const user = {
+      id: data.id,
       username: data.name,
       email: data.email,
       token

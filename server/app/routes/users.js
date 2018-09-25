@@ -3,6 +3,7 @@ import {
   authNewUser,
   validate
 } from './../middlewares/auth';
+
 import {
   newUsers,
   logInUser
