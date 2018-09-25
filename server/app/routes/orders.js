@@ -1,9 +1,11 @@
 import express from 'express';
 import { authenticate } from '../middlewares/auth';
-import postNewOrder from './../middlewares/orders';
+import { getMenu, postFood } from './../middlewares/orders';
 
 const ordersRoutes = express.Router();
 
-ordersRoutes.post('/orders', authenticate, postNewOrder);
+ordersRoutes.get('/menu', authenticate, getMenu);
+ordersRoutes.post('/menu', authenticate, postFood);
+
 
 export default ordersRoutes;

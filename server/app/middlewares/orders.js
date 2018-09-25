@@ -1,4 +1,4 @@
-import placeNewOrder from './../controllers/orders';
+import { menu, newFood } from './../controllers/orders';
 
 
 /** Get menu
@@ -7,20 +7,41 @@ import placeNewOrder from './../controllers/orders';
  * @return {object} the response object
  * @public
 */
-const postNewOrder = (req, res) => {
-  placeNewOrder(req.body, req.userId).then((order) => {
-    res.status(201).send({
+const getMenu = (req, res) => {
+  menu().then((menuList) => {
+    res.send({
       status: 'success',
-      message: 'order was placed succcessfully',
-      data: order,
+      message: 'questions were succcessfully fetched',
+      data: menuList,
     });
-  }).catch((message) => {
-    res.status(400).send({
+  }).catch(() => res.status(404).send({
+    status: 'failure',
+    message: 'questions not found',
+  }));
+};
+
+/** Post menu
+ * @param {string} req is the request parameter
+ * @param {string} res is the response parameter
+ * @return {object} the response object
+ * @public
+*/
+const postFood = (req, res) => {
+  newFood(req.body.food, req.username).then((posted) => {
+    res.send({
+      status: 'success',
+      message: 'question was succcessfully fetched',
+      data: posted,
+    });
+  }).catch((error) => {
+    res.status(404).send({
       status: 'failure',
-      message,
+      message: error.message,
     });
   });
 };
 
-
-export default postNewOrder;
+export {
+  postFood,
+  getMenu
+};

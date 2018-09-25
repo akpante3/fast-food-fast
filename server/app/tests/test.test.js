@@ -3,26 +3,37 @@ import request from 'supertest';
 import app from './../../app';
 import db from '../db/dbconnect';
 
+let token;
+
 before((done) => {
-  db.query('DELETE FROM users');
-  done();
+  db.query('delete from users');
+  request(app)
+    .post('/api/v1/auth/signup')
+    .send({
+      email: 'ghn6gftyr@yahoo.com',
+      username: 'foodamin',
+      password: '123456787',
+      address: '10adenekan fadeyi'
+    })
+    .end((err, res) => {
+      token = res.body.data;// Or something
+      done();
+    });
 });
 
 describe('POST /api/v1/auth/signup', () => {
   it('should sign up a user when all the avaliable data is complete', (done) => {
     const user = {
       email: 'denmo@yahoo.com',
-      username: 'akpante',
+      username: 'foodamin',
       password: '123456787',
       address: '10adenekan fadeyi'
     };
     request(app)
       .post('/api/v1/auth/signup')
       .send(user)
-      .expect(200)
-      .end(() => {
-        done();
-      });
+      .expect(201)
+      .end(done);
   });
 
   it('should sign up a user when all the avaliable data is complete', (done) => {
@@ -90,14 +101,12 @@ describe('POST /api/v1/auth/login', () => {
       .expect((res) => {
         expect(res.body.status === 'success');
       })
-      .end(() => {
-        done();
-      });
+      .end(done);
   });
 
-  it('should not log in a user when all the avaliable data is complete', (done) => {
+  it('should not log in when password is not correct', (done) => {
     const user = {
-      email: 'challenge@yahoo.com',
+      email: 'denmo@yahoo.com',
       password: 'ny67bt58',
     };
     request(app)
@@ -107,12 +116,10 @@ describe('POST /api/v1/auth/login', () => {
       .expect((res) => {
         expect(res.body.status === 'failure');
       })
-      .end(() => {
-        done();
-      });
+      .end(done);
   });
 
-  it('it should not log in a user when all the avaliable data is complete', (done) => {
+  it('it should not with incomplete data', (done) => {
     const user = {
       email: 'enuie@yahoo.com',
       password: 'akp',
@@ -129,7 +136,7 @@ describe('POST /api/v1/auth/login', () => {
       });
   });
 
-  it('it should not log in a user when all the avaliable data is complete', (done) => {
+  it('should not log in a user wit the wrong email', (done) => {
     const user = {
       email: 'enuieyahoo.com',
       password: '1234bt5ny6',

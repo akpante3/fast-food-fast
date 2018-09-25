@@ -14,3 +14,9 @@ CREATE TABLE IF NOT EXISTS orders
   timeOrdered text not null,
   foodID integer not null
 );
+
+CREATE TABLE IF NOT EXISTS menu
+(
+  foodId serial NOT NULL primary key,
+  food text not null
+);

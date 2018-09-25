@@ -22,14 +22,7 @@ const createUser = (email, password, user, address) => {
           expiresIn: 86400,
         }
       );
-      return Promise.resolve({
-        id: data.id,
-        email: data.email,
-        name: data.name,
-        address: data.address,
-        token,
-
-      });
+      return Promise.resolve(token);
     });
 };
 
