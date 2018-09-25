@@ -95,7 +95,7 @@ describe('POST /api/v1/auth/login', () => {
       });
   });
 
-  it('should not log in a user when all the avaliable data is complete', (done) => {
+  it('should not log in an in registered user, (done) => {
     const user = {
       email: 'challenge@yahoo.com',
       password: 'ny67bt58',
@@ -112,9 +112,9 @@ describe('POST /api/v1/auth/login', () => {
       });
   });
 
-  it('it should not log in a user when all the avaliable data is complete', (done) => {
+  it('it should not log in when password is invalid', (done) => {
     const user = {
-      email: 'enuie@yahoo.com',
+      email: 'denmo@yahoo.com',
       password: 'akp',
     };
     request(app)
@@ -129,27 +129,10 @@ describe('POST /api/v1/auth/login', () => {
       });
   });
 
-  it('it should not log in a user when all the avaliable data is complete', (done) => {
+  it('it should not log in a when email is invalid', (done) => {
     const user = {
-      email: 'enuieyahoo.com',
+      email: 'denmoyahoo.com',
       password: '1234bt5ny6',
-    };
-    request(app)
-      .post('/api/v1/auth/login')
-      .send(user)
-      .expect(400)
-      .expect((res) => {
-        expect(res.body.status === 'failure');
-      })
-      .end(() => {
-        done();
-      });
-  });
-
-  it('it should not log in a user when all the avaliable data is complete', (done) => {
-    const user = {
-      email: 'denmo@yahoo.com',
-      password: '12345677',
     };
     request(app)
       .post('/api/v1/auth/login')

@@ -1,7 +1,4 @@
-import promise from 'bluebird';
-import path from 'path';
-import pgp, { QueryFile } from 'pg-promise';
-import env from '../config';
+
 
 const options = {
   promiseLib: promise,
