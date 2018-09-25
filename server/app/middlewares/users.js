@@ -1,7 +1,7 @@
 import { createUser, login } from './../controllers/users';
 
 const newUsers = (req, res) => {
-  const user = req.body.username.trim();
+  const user = (req.body.username).trim();
   createUser(req.body.email, req.body.password, user, req.body.address)
     .then((token) => {
       res.status(201).send({
