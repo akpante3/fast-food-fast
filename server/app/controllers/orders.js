@@ -11,4 +11,4 @@ const menu = () => {
 };
 
 
-export { newFood, menu };
+export { menu };
