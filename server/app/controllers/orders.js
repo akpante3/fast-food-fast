@@ -48,7 +48,7 @@ const postOrders = (ordered, userId) => {
      valid email, address and number`));
   }
 
-  orders.forEach((element) => {
+  orders.map((element) => {
     if (!element.quantity || !element.foodId ) {
       return Promise.reject(new Error('quantity or foodId not found,please insert'));
     }
@@ -56,7 +56,7 @@ const postOrders = (ordered, userId) => {
       `INSERT INTO orders (number, address, quantity, foodId, userId, timeOrdered)
       VALUES($1, $2, $3, $4, $5, $6, $7)`,
       [number, address, element.quantity, element.foodId, userId, timeOrdered]
-    ).catch(() => {return Promise.reject()});
+    );
   });
 
   const data = {
