@@ -12,7 +12,10 @@ CREATE TABLE IF NOT EXISTS orders
   id serial NOT NULL primary key,
   user_Id integer not null REFERENCES users(id),
   timeOrdered text not null,
-  foodID integer not null
+  foodId integer not null REFERENCES menu(foodId),
+  address text not null,
+  number text not null,
+  email text not null
 );
 
 CREATE TABLE IF NOT EXISTS menu

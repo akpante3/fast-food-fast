@@ -1,4 +1,4 @@
-import { menu, newFood } from './../controllers/orders';
+import { menu, newFood, postOrders } from './../controllers/orders';
 
 
 /** Get menu
@@ -38,7 +38,27 @@ const postFood = (req, res) => {
   });
 };
 
+/** Post order
+ * @param {string} req is the request parameter
+ * @param {string} res is the response parameter
+ * @return {object} the response object
+ * @public
+*/
+const newOrder = (req, res) => {
+  postOrders(req.body, req.userId).then((result) => {
+    res.status(201).send({
+      status: 'success',
+      message: 'orders were posted succcessfully',
+      data: result,
+    });
+  }).catch(() => res.status(400).send({
+    status: 'failure',
+    message: 'please input a valid order',
+  }));
+};
+
 export {
   getMenu,
-  postFood
+  postFood,
+  newOrder
 };
