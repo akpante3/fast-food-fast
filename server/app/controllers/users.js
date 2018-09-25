@@ -22,14 +22,31 @@ const createUser = (email, password, user, address) => {
           expiresIn: 86400,
         }
       );
-      return Promise.resolve({
-        id: data.id,
-        email: data.email,
-        name: data.name,
-        address: data.address,
-        token,
-      });
+      return Promise.resolve(token);
     });
 };
 
-export default createUser;
+const login = (email, password) => db.one(`SELECT * FROM users 
+WHERE email =$1`, email)
+  .then((data) => {
+    const passwordIsValid = bcrypt.compareSync(password, data.password);
+    const token = jwt.sign({ id: data.id }, process.env.JWT_SECRET, {
+      expiresIn: 86400,
+    });
+    if (!passwordIsValid) {
+      return Promise.reject(Error);
+    }
+    const user = {
+      id: data.id,
+      username: data.name,
+      email: data.email,
+      token
+    };
+
+    return Promise.resolve(user);
+  }).catch(e => Promise.reject(e));
+
+export {
+  createUser,
+  login
+};
