@@ -1,3 +1,7 @@
+import promise from 'bluebird';
+import path from 'path';
+import pgp, { QueryFile } from 'pg-promise';
+import env from '../config';
 
 const options = {
   promiseLib: promise,
@@ -12,4 +16,5 @@ const file = new QueryFile(scriptPath);
 
 db.none(file)
   .then(() => console.log('successfully created dabatase'));
-export default db;
+export { db, pgp };
+
