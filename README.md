@@ -45,23 +45,36 @@ npm test
 
 ## How to use API on POSTMAN
 
-|HTTP verbs | Route Endpoints| Function | Request Payload|
-| :---         |     :---:      |          ---: |          ---: |
-| GET  | /api/v1/menu     |get food menu</br>*foodId to post an order*    | None   |
-| GET  | /api/v1/orders     |Gets all orders    | None   |
-| POST    | 	/api/v1/orders       | Posts a new order    |"orders": [    {"foodId": <number>, "quantity": <number>},<br>{"foodId": <number>, "quantity": <number>}]|                                    
-| GET    | /api/v1/orders/:ordersId       | Gets an order      | None |  
-| PUT    | /api/v1/orders/:ordersId      | Updates an order status     |<CODE>status : 'completed','decline','accept'</CODE><br>---*type: sting*|
+- **[<code>GET</code>api/v1/menu]**<br/> 
+    -get all the avaliable food on the app<br/>
+
+- **[<code>POST</code>api/v1/orders]**<br/>
+    -post an order on the app<br/>
+    -required data:   {<br/>
+         foodId:---*type: number,input foodId of food you want to order,go to* **<code>GET</code>api/v1/menu** *to get foodId of food*<br/>
+         quantity:---*type: number*<br/>
+      }<br/>
+     
+- **[<code>GET</code>api/v1/orders]** <br/>
+    -get all orders that have been posted on the app<br/>
+
+- **[<code>GET</code> api/v1/orders/:id]**<br/>
+    -get a particular order<br/>
+    -params.id is the order id, **<code>GET</code>api/v1/orders** to see all orders and id
+      
+- **[<code>PUT</code>api/v1/orders/:id]**<br/>
+         -id.params is the order id,**<code>GET</code>api/v1/orders** to see all orders and id<br/> 
+         -required data:   { 
+         <br/>
+                status : 'completed','decline'---*type: sting* <br/>
+           }<br/>
+
  
 
 ## Technologies and Frameworks
-- HTML, 
-- CSS, 
-- NodeJs, 
-- express
-- ESlint
-- Mocha
-- Babel
+. HTML, 
+. CSS, 
+. NodeJs, 
 
 ### How do I connect to the this API?
 
