@@ -1,12 +1,15 @@
 import expect from 'expect';
 import request from 'supertest';
 import app from './../../app';
-import db from '../db/dbconnect';
+import { db } from '../db/dbconnect';
 
 let token;
+let pin;
 
 before((done) => {
+  db.query('delete from orders');
   db.query('delete from users');
+  db.query('delete from menu');
   request(app)
     .post('/api/v1/auth/signup')
     .send({
@@ -17,8 +20,20 @@ before((done) => {
     })
     .end((err, res) => {
       token = res.body.data;// Or something
-      done();
     });
+
+  request(app)
+    .post('/api/v1/auth/signup')
+    .send({
+      email: 'daloya@yahoo.com',
+      username: 'andi',
+      password: '123456787',
+      address: '10adenekan fadeyi'
+    })
+    .end((err, res) => {
+      pin = res.body.data;// Or something
+    });
+  done();
 });
 
 describe('POST /api/v1/auth/signup', () => {
@@ -175,9 +190,13 @@ describe('POST /api/v1/auth/login', () => {
 
 describe('POST /api/v1/menu', () => {
   it('should post new food on the app', (done) => {
+    const post = {
+      food: 'garri'
+    };
     request(app)
       .post('/api/v1/menu')
       .set('accessToken', token)
+      .send(post)
       .expect(201)
       .expect((res) => {
         expect(res.body.status === 'success');
@@ -203,6 +222,8 @@ describe('POST /api/v1/menu', () => {
   it('should not post food when token is not found', (done) => {
     request(app)
       .post('/api/v1/menu')
+      .set('accessToken', token)
+      .send({})
       .expect(400)
       .expect((res) => {
         expect(res.body.status === 'failure');
@@ -212,7 +233,7 @@ describe('POST /api/v1/menu', () => {
       });
   });
 });
-
+// GET menu
 describe('GET /api/v1/menu', () => {
   it('should get the menu when user has a token', (done) => {
     request(app)
@@ -239,3 +260,217 @@ describe('GET /api/v1/menu', () => {
     });
   });
 });
+
+describe('POST /api/v1/orders', () => {
+  it('should get the menu when user has a token', (done) => {
+    const order1 = {
+      email: 'akpante@yahoo.com',
+      number: '08064753028',
+      address: '10 round road',
+      orders: {
+        foodId: '1',
+        quntity: '34'
+      },
+    };
+    request(app)
+      .post('/api/v1/orders')
+      .set('accessToken', token)
+      .send(order1)
+      .expect(201)
+      .expect((res) => {
+        expect(res.body.status === 'success');
+        console.log(res);
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should not post food when a property is missing', (done) => {
+    const order2 = {
+      email: 'akpante@yahoo.com',
+      address: '10 round road',
+      orders: {
+        foodId: '1',
+        quntity: '34'
+      },
+    };
+    request(app)
+      .post('/api/v1/orders')
+      .set('accessToken', token)
+      .send(order2)
+      .expect(400)
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should not post an order when there is incorrect foodId', (done) => {
+    const order3 = {
+      email: 'akpante@yahoo.com',
+      number: '08064753028',
+      address: '10 round road',
+      orders: {
+        foodId: 900000000,
+        quntity: '34'
+      },
+    };
+    request(app)
+      .post('/api/v1/orders')
+      .set('accessToken', token)
+      .send(order3)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should not make post if quantity is not an integer', (done) => {
+    const detail = {
+      email: 'akpante@yahoo.com',
+      number: '08064753028',
+      address: 567,
+      orders: {
+      },
+    };
+    request(app)
+      .post('/api/v1/orders')
+      .set('accessToken', token)
+      .send(detail)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should not make post if quantity is not an integer', (done) => {
+    const detail = {
+      email: 'akpante@yahoo.com',
+      number: '08064753028',
+      address: 567,
+      orders: {
+      },
+    };
+    request(app)
+      .post('/api/v1/orders')
+      .set('accessToken', token)
+      .send(detail)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+});
+// GET an order
+describe('GET /api/v1/orders/:id', () => {
+  it('should be an error when id does not exist', (done) => {
+    request(app)
+      .get('/api/v1/orders/15379')
+      .set('accessToken', token)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+});
+
+// GET all order
+describe('GET /api/v1/orders', () => {
+  it('should get all orders', (done) => {
+    request(app)
+      .get('/api/v1/orders')
+      .set('accessToken', token)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.status === 'success');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should give an error if user is not an admin', (done) => {
+    request(app)
+      .get('/api/v1/orders')
+      .set('accessToken', pin)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+});
+
+// Get users order
+describe('GET /api/v1/orders/:userid/orders', () => {
+  it('should get all orders', (done) => {
+    request(app)
+      .get('/api/v1/orders/1/orders')
+      .set('accessToken', token)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.status === 'success');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should give an error if no order was found for an id', (done) => {
+    request(app)
+      .get('/api/v1/orders/234536/orders')
+      .set('accessToken', token)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+});
+// PUT
+// Get users order
+describe('PUT /api/v1/orders', () => {
+  it('should give an error if no order was found for an id', (done) => {
+    request(app)
+      .put('/api/v1/orders/234536')
+      .set('accessToken', token)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should give an error when status is not found', (done) => {
+    request(app)
+      .put('/api/v1/orders/234536')
+      .send({ status: '' })
+      .set('accessToken', token)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+});
+

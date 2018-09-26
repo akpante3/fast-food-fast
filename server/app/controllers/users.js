@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import db from '../db/dbconnect';
+import { db } from '../db/dbconnect';
 
 
 /**  create a User

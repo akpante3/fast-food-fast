@@ -1,4 +1,4 @@
-import { menu, newFood, postOrders } from './../controllers/orders';
+import { menu, newFood, postOrders, getOne, getAll, userOrders, status } from './../controllers/orders';
 
 
 /** Get menu
@@ -57,8 +57,92 @@ const newOrder = (req, res) => {
   }));
 };
 
+/** GET an order
+ * @param {string} req is the request parameter
+ * @param {string} res is the response parameter
+ * @return {object} the response object
+ * @public
+*/
+const anOrder = (req, res) => {
+  getOne(req.params.id).then((order) => {
+    res.send({
+      status: 'success',
+      message: 'order was succcessfully fetched',
+      data: order,
+    });
+  }).catch(() => {
+    res.status(404).send({
+      status: 'failure',
+      message: 'order  was not found',
+    });
+  });
+};
+
+/** GET all order
+ * @param {string} req is the request parameter
+ * @param {string} res is the response parameter
+ * @return {object} the response object
+ * @public
+*/
+const allOrders = (req, res) => {
+  getAll(req.username).then((order) => {
+    res.send({
+      status: 'success',
+      message: 'order was succcessfully fetched',
+      data: order,
+    });
+  }).catch((error) => {
+    res.status(404).send({
+      status: 'failure',
+      message: error.message
+    });
+  });
+};
+/** GET user orders
+ * @param {string} req is the request parameter
+ * @param {string} res is the response parameter
+ * @return {object} the response object
+ * @public
+*/
+const getUserOrders = (req, res) => {
+  userOrders(req.params.userId).then((order) => {
+    res.send({
+      status: 'success',
+      message: 'order was succcessfully fetched',
+      data: order,
+    });
+  }).catch((error) => {
+    res.status(404).send({
+      status: 'failure',
+      message: error.message,
+    });
+  });
+};
+/** GET user orders
+ * @param {string} req is the request parameter
+ * @param {string} res is the response parameter
+ * @return {object} the response object
+ * @public
+*/
+const statusUpdate = (req, res) => {
+  status(req.params.id, req.body.status).then(() => {
+    res.status(200).send({
+      status: 'success',
+      message: 'answer was successfully accepted',
+    });
+  }).catch(error => res.status(404).send({
+    status: 'failure',
+    message: error.message,
+  }));
+};
+
+
 export {
   getMenu,
   postFood,
-  newOrder
+  newOrder,
+  anOrder,
+  allOrders,
+  getUserOrders,
+  statusUpdate
 };

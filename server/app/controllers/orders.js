@@ -1,4 +1,4 @@
-import db from '../db/dbconnect';
+import { db } from '../db/dbconnect';
 import { validateEmail } from '../middlewares/auth';
 /** Get menu
  * @return {obj} array of food
@@ -19,7 +19,7 @@ const menu = () => {
 */
 const newFood = (food, username) => {
   if (!(username === 'foodamin')) {
-    return Promise.reject(new Error(`this Feature is only avaliable to the admin`));
+    return Promise.reject(new Error('this Feature is only avaliable to the admin'));
   }
   return db.one(`INSERT INTO menu (food)
    VALUES($1) RETURNING foodId, food`, food)
@@ -34,8 +34,13 @@ const newFood = (food, username) => {
  * @public
 */
 const postOrders = (ordered, userId) => {
-  const orderID = `000${new Date().valueOf()}`;
-  const timeOrdered = new Date();
+  const orderID = new Date().valueOf();
+  const time = new Date();
+  const date = time.getDate();
+  const month = time.getMonth();
+  const year = time.getFullYear();
+  const timeOrdered = `${date} - ${month} - ${year}`;
+
   const {
     number,
     address,
@@ -48,25 +53,91 @@ const postOrders = (ordered, userId) => {
      valid email, address and number`));
   }
 
-  orders.map((element) => {
-    if (!element.quantity || !element.foodId ) {
-      return Promise.reject(new Error('quantity or foodId not found,please insert'));
-    }
-    return db.one(
-      `INSERT INTO orders (number, address, quantity, foodId, userId, timeOrdered)
-      VALUES($1, $2, $3, $4, $5, $6, $7)`,
-      [number, address, element.quantity, element.foodId, userId, timeOrdered]
-    );
+  return db.tx((data) => {
+    return orders.forEach((order) => {
+      data.one(
+        `INSERT INTO orders(quantity,timeOrdered,foodId,address,email,orderid,userid,status )
+      VALUES($1,$2,$3,$4,$5,$6,$7,$8) Returning orderid`,
+        [order.quantity, timeOrdered, order.foodId, address, email, orderID, userId, 'null']
+      );
+    });
+  }).then(() => {
+    const details = {
+      number,
+      address,
+      email,
+      timeOrdered,
+      orderID,
+      userId,
+      orders
+    };
+    return Promise.resolve(details);
+  }).catch((error) => {
+    return Promise.reject(error);
   });
-
-  const data = {
-    number,
-    timeOrdered,
-    address,
-    orderID,
-    orders,
-  };
-  return Promise.resolve(data);
 };
+/**  Get one order
+ * @param {string} username
+ * @return {obj} order data
+ * @public
+*/
+const getAll = (username) => {
+  if (!(username === 'foodamin')) {
+    return Promise.reject(new Error('this Feature is only avaliable to the admin'));
+  }
+  return db.any('SELECT * FROM orders')
+    .then((data) => {
+      return Promise.resolve(data);
+    });
+};
+/**  Get one order
+ * @param {string} id
+ * @return {obj} order data
+ * @public
+*/
+const getOne = (id) => {
+  return db.any(`SELECT * FROM orders
+     WHERE orderID=$1`, id)
+    .then((data) => {
+      if (data.length === 0) {
+        return Promise.reject();
+      }
+      return Promise.resolve(data);
+    });
+};
+/**  Get all orders by user
+ * @param {string} id
+ * @return {obj} order data
+ * @public
+*/
+const userOrders = (id) => {
 
-export { menu, newFood, postOrders };
+  return db.any(`SELECT * FROM orders
+     WHERE userid=$1`, id)
+    .then((data) => {
+      if (data.length === 0) {
+        return Promise.reject(new Error('invalid request,No orders found with this id'));
+      }
+      return Promise.resolve(data);
+    });
+};
+/** PUT update status
+ * @param {string} orderId
+ * @param {string} statusUpdate
+ * @return {obj} order data
+ * @public
+*/
+const status = (orderId, statusUpdate) => {
+  const id = parseInt(orderId, 10);
+
+  if (!(statusUpdate === 'completed' || statusUpdate === 'accepted' || statusUpdate === 'declined')) {
+    return Promise.reject(new Error('invalid status update, status should be completed, accepted or declined'));
+  }
+
+  return db.one(`UPDATE orders SET status=$2
+   WHERE orderid=$1`, [id, statusUpdate])
+    .then(() => {
+      return Promise.resolve('status was updated successfully');
+    });
+};
+export { menu, newFood, postOrders, getOne, getAll, userOrders, status };

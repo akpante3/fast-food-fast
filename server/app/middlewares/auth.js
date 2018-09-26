@@ -56,6 +56,7 @@ const authenticate = (req, res, next) => {
   }
 };
 
+
 export {
   authNewUser,
   validate,
