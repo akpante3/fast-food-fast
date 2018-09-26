@@ -1,3 +1,4 @@
+
 import db from '../db/dbconnect';
 /** Get menu
  * @return {obj} array of food
@@ -26,3 +27,4 @@ const newFood = (food, username) => {
 };
 
 export { menu, newFood };
+

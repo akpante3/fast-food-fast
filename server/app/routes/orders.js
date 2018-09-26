@@ -1,3 +1,4 @@
+
 import express from 'express';
 import { authenticate } from '../middlewares/auth';
 import { getMenu, postFood } from './../middlewares/orders';
@@ -8,3 +9,4 @@ ordersRoutes.get('/menu', authenticate, getMenu);
 ordersRoutes.post('/menu', authenticate, postFood);
 
 export default ordersRoutes;
+

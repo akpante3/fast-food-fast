@@ -1,3 +1,4 @@
+
 import { createUser, login } from './../controllers/users';
 
 const newUsers = (req, res) => {
@@ -35,3 +36,4 @@ export {
   newUsers,
   logInUser
 };
+

@@ -56,9 +56,11 @@ const authenticate = (req, res, next) => {
   }
 };
 
+
 export {
   authNewUser,
   validate,
-  authenticate
+  authenticate,
+  validateEmail
 };
 
