@@ -1,4 +1,12 @@
-import { menuDb, newfoodDb, postOrdersDb, getAllDb, getOneDb, userOrdersDb, statusDb } from '../db/ordersDb';
+import {
+  menuDb,
+  newfoodDb,
+  postOrdersDb,
+  getAllDb,
+  getOneDb,
+  userOrdersDb,
+  statusDb
+} from '../db/ordersDb';
 /** Get menu
  * @return {obj} array of food
  * @public
@@ -77,12 +85,10 @@ const userOrders = (id) => {
  * @public
 */
 const status = (orderId, statusUpdate) => {
-  const id = parseInt(orderId, 10);
-
   if (!(statusUpdate === 'completed' || statusUpdate === 'accepted' || statusUpdate === 'declined')) {
     return Promise.reject(new Error('invalid status update, status should be completed, accepted or declined'));
   }
-  return statusDb(id, statusUpdate).then((data) => {
+  return statusDb(orderId, statusUpdate).then((data) => {
     return Promise.resolve(data);
   }).catch((error) => {
     return Promise.reject(error.message);
