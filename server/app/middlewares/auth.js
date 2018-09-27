@@ -17,8 +17,12 @@ const validate = (req, res, next) => {
 };
 
 const validateFoodId = (req, res, next) => {
-  const { orders, email, number, address } = req.body;
-  
+  const {
+    orders,
+    email,
+    number,
+    address
+  } = req.body;
   if (!number || !address || !email) {
     return res.status(400).send({
       status: 'failure',
@@ -32,19 +36,16 @@ const validateFoodId = (req, res, next) => {
       message: 'invalid email or username,please input a valid email',
     });
   }
-  debugger;
   const decline = [];
   return db.tx((data) => {
     return orders.map((order) => {
-      return data.any('select * from menu where foodId=$1', order.foodId).then((order) => {
-        console.log(order);
-        if (!order.length) {
+      return data.any('select * from menu where foodId=$1', order.foodId).then((foodId) => {
+        if (!foodId.length) {
           decline.push(false);
         }
       });
     });
-  }).then(() => { 
-    debugger;
+  }).then(() => {
     if (decline.length > 0) {
       return res.status(400).send({
         status: 'failure',

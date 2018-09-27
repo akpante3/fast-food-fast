@@ -17,13 +17,13 @@ CREATE TABLE IF NOT EXISTS orders
 (
   quantity integer not null,
   id serial NOT NULL primary key,
-  timeOrdered character(50) not null,
-  foodId integer not null REFERENCES menu(foodId),
+  timeOrdered varchar(50) not null,
+  foodid integer not null REFERENCES menu(foodId),
   userid integer not null REFERENCES users(id),
-  address character(225) not null,
-  email character(50) not null,
-  orderid character(225) not null,
-  status character(15) not null
+  address varchar(225) not null,
+  email varchar(50) not null,
+  orderid varchar(225) not null,
+  status varchar(15) not null
 
 );
 

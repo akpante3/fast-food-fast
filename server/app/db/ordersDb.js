@@ -1,5 +1,4 @@
 import { db } from '../db/dbconnect';
-import { userOrders } from '../controllers/orders';
 
 
 const menuDb = () => {
@@ -41,7 +40,7 @@ const postOrdersDb = (ordered, userId) => {
       return data.one(
         `INSERT INTO orders(quantity,timeOrdered,foodid,address,email,orderid,userid,status)
       VALUES($1,$2,$3,$4,$5,$6,$7,$8)`,
-        [order.quantity, timeOrdered, order.foodId, address, email, orderID, userId, 'pending']
+        [order.quantity, timeOrdered, order.foodid, address, email, orderID, userId, 'pending']
       );
     });
   }).then(() => {
@@ -56,7 +55,7 @@ const postOrdersDb = (ordered, userId) => {
     };
     return Promise.resolve(details);
   }).catch((error) => {
-    return Promise.reject(error);
+    return Promise.reject(error.message);
   });
 };
 
@@ -90,10 +89,12 @@ const userOrdersDb = (id) => {
 };
 
 const statusDb = (id, statusUpdate) => {
-  return db.one(`UPDATE orders SET status = $2
-   WHERE orderid = $1`, [id, statusUpdate])
+  return db.one(`UPDATE orders SET status='${statusUpdate}'
+   WHERE orderid = '${id}'`)
     .then(() => {
       return Promise.resolve('status was updated successfully');
+    }).catch((error) => {
+      console.log(error.message);
     });
 };
 export {
