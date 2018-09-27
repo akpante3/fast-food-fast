@@ -1,14 +1,12 @@
-import { db } from '../db/dbconnect';
-import { validateEmail } from '../middlewares/auth';
+import { menuDb, newfoodDb, postOrdersDb, getAllDb, getOneDb, userOrdersDb, statusDb } from '../db/ordersDb';
 /** Get menu
  * @return {obj} array of food
  * @public
 */
 const menu = () => {
-  return db.any('select * from menu')
-    .then((data) => {
-      return Promise.resolve(data);
-    });
+  return menuDb().then((data) => {
+    return Promise.resolve(data);
+  });
 };
 
 /**  POST new  food
@@ -18,62 +16,21 @@ const menu = () => {
  * @public
 */
 const newFood = (food, username) => {
-  if (!(username === 'foodamin')) {
-    return Promise.reject(new Error('this Feature is only avaliable to the admin'));
-  }
-  return db.one(`INSERT INTO menu (food)
-   VALUES($1) RETURNING foodId, food`, food)
-    .then((data) => {
-      return Promise.resolve(data);
-    });
+  return newfoodDb(food, username).then((data) => {
+    return Promise.resolve(data);
+  });
 };
 /**  POST an order
  * @param {string} ordered
- *@param {string} userId
+ * @param {string} userId
  * @return {obj} an containing order details
  * @public
 */
 const postOrders = (ordered, userId) => {
-  const orderID = new Date().valueOf();
-  const time = new Date();
-  const date = time.getDate();
-  const month = time.getMonth();
-  const year = time.getFullYear();
-  const timeOrdered = `${date} - ${month} - ${year}`;
-
-  const {
-    number,
-    address,
-    email,
-    orders
-  } = ordered;
-
-  if (!number || !address || !validateEmail(email)) {
-    return Promise.reject(new Error(`incomplete data, please input a
-     valid email, address and number`));
-  }
-
-  return db.tx((data) => {
-    return orders.forEach((order) => {
-      data.one(
-        `INSERT INTO orders(quantity,timeOrdered,foodId,address,email,orderid,userid,status )
-      VALUES($1,$2,$3,$4,$5,$6,$7,$8) Returning orderid`,
-        [order.quantity, timeOrdered, order.foodId, address, email, orderID, userId, 'null']
-      );
-    });
-  }).then(() => {
-    const details = {
-      number,
-      address,
-      email,
-      timeOrdered,
-      orderID,
-      userId,
-      orders
-    };
-    return Promise.resolve(details);
-  }).catch((error) => {
-    return Promise.reject(error);
+  return postOrdersDb(ordered, userId).then((data) => {
+    return Promise.resolve(data);
+  }).catch(() => {
+    return Promise.reject();
   });
 };
 /**  Get one order
@@ -85,10 +42,9 @@ const getAll = (username) => {
   if (!(username === 'foodamin')) {
     return Promise.reject(new Error('this Feature is only avaliable to the admin'));
   }
-  return db.any('SELECT * FROM orders')
-    .then((data) => {
-      return Promise.resolve(data);
-    });
+  return getAllDb(username).then((data) => {
+    return Promise.resolve(data);
+  });
 };
 /**  Get one order
  * @param {string} id
@@ -96,14 +52,11 @@ const getAll = (username) => {
  * @public
 */
 const getOne = (id) => {
-  return db.any(`SELECT * FROM orders
-     WHERE orderID=$1`, id)
-    .then((data) => {
-      if (data.length === 0) {
-        return Promise.reject();
-      }
-      return Promise.resolve(data);
-    });
+  return getOneDb(id).then((data) => {
+    return Promise.resolve(data);
+  }).catch(() => {
+    return Promise.reject();
+  });
 };
 /**  Get all orders by user
  * @param {string} id
@@ -111,15 +64,11 @@ const getOne = (id) => {
  * @public
 */
 const userOrders = (id) => {
-
-  return db.any(`SELECT * FROM orders
-     WHERE userid=$1`, id)
-    .then((data) => {
-      if (data.length === 0) {
-        return Promise.reject(new Error('invalid request,No orders found with this id'));
-      }
-      return Promise.resolve(data);
-    });
+  return userOrdersDb(id).then((data) => {
+    return Promise.resolve(data);
+  }).catch((error) => {
+    return Promise.reject(error.message);
+  });
 };
 /** PUT update status
  * @param {string} orderId
@@ -133,11 +82,10 @@ const status = (orderId, statusUpdate) => {
   if (!(statusUpdate === 'completed' || statusUpdate === 'accepted' || statusUpdate === 'declined')) {
     return Promise.reject(new Error('invalid status update, status should be completed, accepted or declined'));
   }
-
-  return db.one(`UPDATE orders SET status=$2
-   WHERE orderid=$1`, [id, statusUpdate])
-    .then(() => {
-      return Promise.resolve('status was updated successfully');
-    });
+  return statusDb(id, statusUpdate).then((data) => {
+    return Promise.resolve(data);
+  }).catch((error) => {
+    return Promise.reject(error.message);
+  });
 };
 export { menu, newFood, postOrders, getOne, getAll, userOrders, status };

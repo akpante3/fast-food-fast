@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { db } from '../db/dbconnect';
 
 const validateEmail = (email) => {
   const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -13,6 +14,45 @@ const validate = (req, res, next) => {
     });
   }
   next();
+};
+
+const validateFoodId = (req, res, next) => {
+  const { orders, email, number, address } = req.body;
+  
+  if (!number || !address || !email) {
+    return res.status(400).send({
+      status: 'failure',
+      message: 'email, number or address missing',
+    });
+  }
+
+  if (!validateEmail(email)) {
+    return res.status(400).send({
+      status: 'failure',
+      message: 'invalid email or username,please input a valid email',
+    });
+  }
+  debugger;
+  const decline = [];
+  return db.tx((data) => {
+    return orders.map((order) => {
+      return data.any('select * from menu where foodId=$1', order.foodId).then((order) => {
+        console.log(order);
+        if (!order.length) {
+          decline.push(false);
+        }
+      });
+    });
+  }).then(() => { 
+    debugger;
+    if (decline.length > 0) {
+      return res.status(400).send({
+        status: 'failure',
+        message: 'foodid is not valid',
+      });
+    }
+    next();
+  });
 };
 
 const authNewUser = (req, res, next) => {
@@ -61,6 +101,7 @@ export {
   authNewUser,
   validate,
   authenticate,
-  validateEmail
+  validateEmail,
+  validateFoodId,
 };
 

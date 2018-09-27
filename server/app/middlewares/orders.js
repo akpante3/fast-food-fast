@@ -130,9 +130,9 @@ const statusUpdate = (req, res) => {
       status: 'success',
       message: 'status was successfully accepted',
     });
-  }).catch(error => res.status(404).send({
+  }).catch(() => res.status(404).send({
     status: 'failure',
-    message: error.message,
+    message: 'status was not updated',
   }));
 };
 

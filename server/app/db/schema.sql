@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS orders
   address character(225) not null,
   email character(50) not null,
   orderid character(225) not null,
-  status character(15) Default NULL
+  status character(15) not null
 
 );
 

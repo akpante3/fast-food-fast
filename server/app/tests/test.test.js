@@ -5,6 +5,7 @@ import { db } from '../db/dbconnect';
 
 let token;
 let pin;
+let food;
 
 before((done) => {
   db.query('delete from orders');
@@ -136,7 +137,7 @@ describe('POST /api/v1/auth/login', () => {
       .end(done);
   });
 
-  it('it should not with incomplete data', (done) => {
+  it('it should not login with incomplete incomplete data', (done) => {
     const user = {
       email: 'enuie@yahoo.com',
       password: 'akp',
@@ -242,6 +243,7 @@ describe('GET /api/v1/menu', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body.status === 'failure');
+        food = res.body;
       })
       .end(() => {
         done();
@@ -262,15 +264,17 @@ describe('GET /api/v1/menu', () => {
 });
 
 describe('POST /api/v1/orders', () => {
-  it('should get the menu when user has a token', (done) => {
+  it('should post an order when required data is complete', (done) => {
     const order1 = {
       email: 'akpante@yahoo.com',
       number: '08064753028',
       address: '10 round road',
-      orders: {
-        foodId: '1',
-        quntity: '34'
-      },
+      orders: [
+        {
+          foodId: food.quantity,
+          quantity: food.quantity,
+        }
+      ],
     };
     request(app)
       .post('/api/v1/orders')
@@ -279,21 +283,23 @@ describe('POST /api/v1/orders', () => {
       .expect(201)
       .expect((res) => {
         expect(res.body.status === 'success');
-        console.log(res);
       })
-      .end(() => {
-        done();
-      });
+      .end(done);
   });
 
   it('should not post food when a property is missing', (done) => {
     const order2 = {
       email: 'akpante@yahoo.com',
       address: '10 round road',
-      orders: {
+      orders: [{
         foodId: '1',
-        quntity: '34'
+        quantity: '34'
       },
+      {
+        foodId: '1',
+        quantity: '34'
+      },
+      ]
     };
     request(app)
       .post('/api/v1/orders')
@@ -310,10 +316,15 @@ describe('POST /api/v1/orders', () => {
       email: 'akpante@yahoo.com',
       number: '08064753028',
       address: '10 round road',
-      orders: {
-        foodId: 900000000,
-        quntity: '34'
+      orders: [{
+        foodId: '1',
+        quantity: '34'
       },
+      {
+        foodId: '1',
+        quantity: '34'
+      },
+      ],
     };
     request(app)
       .post('/api/v1/orders')
@@ -323,9 +334,7 @@ describe('POST /api/v1/orders', () => {
       .expect((res) => {
         expect(res.body.status === 'failure');
       })
-      .end(() => {
-        done();
-      });
+      .end(done);
   });
 
   it('should not make post if quantity is not an integer', (done) => {
@@ -333,29 +342,8 @@ describe('POST /api/v1/orders', () => {
       email: 'akpante@yahoo.com',
       number: '08064753028',
       address: 567,
-      orders: {
-      },
-    };
-    request(app)
-      .post('/api/v1/orders')
-      .set('accessToken', token)
-      .send(detail)
-      .expect(400)
-      .expect((res) => {
-        expect(res.body.status === 'failure');
-      })
-      .end(() => {
-        done();
-      });
-  });
-
-  it('should not make post if quantity is not an integer', (done) => {
-    const detail = {
-      email: 'akpante@yahoo.com',
-      number: '08064753028',
-      address: 567,
-      orders: {
-      },
+      orders: [{
+      }],
     };
     request(app)
       .post('/api/v1/orders')
@@ -444,7 +432,6 @@ describe('GET /api/v1/orders/:userid/orders', () => {
   });
 });
 // PUT
-// Get users order
 describe('PUT /api/v1/orders', () => {
   it('should give an error if no order was found for an id', (done) => {
     request(app)
