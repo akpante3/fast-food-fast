@@ -19,7 +19,6 @@ const createUser = (email, password, user, address) => {
     return Promise.reject();
   });
 };
-
 const login = (email, password) => {
   return loginDb(email, password).then((data) => {
     return Promise.resolve(data);

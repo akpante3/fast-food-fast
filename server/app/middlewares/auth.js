@@ -13,7 +13,8 @@ const missing = (report, value) => {
 };
 
 const usersAccess = (req, res, next) => {
-  if (req.params.id !== req.userId) {
+  const id = parseInt(req.params.userId, 0);
+  if (id !== req.userId) {
     return res.status(400).send({
       status: 'failure',
       message: 'this feature is only avaliable to the user',

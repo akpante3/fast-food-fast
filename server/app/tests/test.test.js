@@ -10,6 +10,7 @@ let foodID;
 let userid;
 
 before((done) => {
+  db.query('DELETE FROM users');
   request(app)
     .post('/api/v1/auth/signup')
     .send({
@@ -20,7 +21,7 @@ before((done) => {
     })
     .end((err, res) => {
       token = res.body.data;
-      console.log(token, 'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG')
+      console.log(token)
     });
 
   request(app)
@@ -32,10 +33,11 @@ before((done) => {
       address: '10adenekan fadeyi'
     })
     .end((err, res) => {
-      pin = res.body.data;
+      pin = res.body.data;// Or something
     });
   done();
 });
+
 
 describe('POST /api/v1/auth/signup', () => {
   it('should sign up a user when all the avaliable data is complete', (done) => {
