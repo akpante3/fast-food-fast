@@ -9,10 +9,10 @@ const newUsers = (req, res) => {
         message: 'user was created succcessfully',
         data: token,
       });
-    }).catch((error) => {
+    }).catch(() => {
       res.status(400).send({
         status: 'failure',
-        message: error.message,
+        message: 'error user was not created',
       });
     });
 };
@@ -27,7 +27,7 @@ const logInUser = (req, res) => {
     });
   }).catch(() => res.status(400).send({
     status: 'failure',
-    message: 'users was not found',
+    message: 'user was not found',
   }));
 };
 

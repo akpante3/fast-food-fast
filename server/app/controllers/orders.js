@@ -19,12 +19,13 @@ const menu = () => {
 
 /**  POST new  food
  *  @param {string} food
- *  @param {string} username
+ *  @param {string} price
+ * @param {string} username
  * @return {obj} new food
  * @public
 */
-const newFood = (food, username) => {
-  return newfoodDb(food, username).then((data) => {
+const newFood = (food, price) => {
+  return newfoodDb(food, price).then((data) => {
     return Promise.resolve(data);
   });
 };
@@ -41,13 +42,13 @@ const postOrders = (ordered, userId) => {
     return Promise.reject();
   });
 };
-/**  Get one order
+/**  Get all order
  * @param {string} username
  * @return {obj} order data
  * @public
 */
 const getAll = (username) => {
-  if (!(username === 'foodamin')) {
+  if (username !== 'foodadmin') {
     return Promise.reject(new Error('this Feature is only avaliable to the admin'));
   }
   return getAllDb(username).then((data) => {
@@ -68,14 +69,15 @@ const getOne = (id) => {
 };
 /**  Get all orders by user
  * @param {string} id
+ * @param {string} userid
  * @return {obj} order data
  * @public
 */
 const userOrders = (id) => {
   return userOrdersDb(id).then((data) => {
     return Promise.resolve(data);
-  }).catch((error) => {
-    return Promise.reject(error.message);
+  }).catch(() => {
+    return Promise.reject();
   });
 };
 /** PUT update status
@@ -85,13 +87,14 @@ const userOrders = (id) => {
  * @public
 */
 const status = (orderId, statusUpdate) => {
-  if (!(statusUpdate === 'completed' || statusUpdate === 'accepted' || statusUpdate === 'declined')) {
+  const reject = 'order was not updated';
+  if (!(statusUpdate === 'completed' || statusUpdate === 'accepted' || statusUpdate === 'declined' || !statusUpdate)) {
     return Promise.reject(new Error('invalid status update, status should be completed, accepted or declined'));
   }
   return statusDb(orderId, statusUpdate).then((data) => {
     return Promise.resolve(data);
-  }).catch((error) => {
-    return Promise.reject(error.message);
+  }).catch(() => {
+    return Promise.reject(reject);
   });
 };
 export { menu, newFood, postOrders, getOne, getAll, userOrders, status };

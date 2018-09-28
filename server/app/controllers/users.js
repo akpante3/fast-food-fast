@@ -1,6 +1,7 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { db } from '../db/dbconnect';
+import {
+  creteuserDb,
+  loginDb
+} from '../db/userDb';
 
 
 /**  create a User
@@ -12,39 +13,20 @@ import { db } from '../db/dbconnect';
  * @public
 */
 const createUser = (email, password, user, address) => {
-  const hashedPassword = bcrypt.hashSync(password, 8);
-  return db.one(`INSERT INTO users (email, password, name, address) 
-    VALUES($1,$2,$3,$4) RETURNING id, email, name, address `, [email, hashedPassword, user, address])
-    .then((data) => {
-      const token = jwt.sign(
-        { id: data.id, name: user },
-        process.env.JWT_SECRET, {
-          expiresIn: 86400,
-        }
-      );
-      return Promise.resolve(token);
-    });
+  return creteuserDb(email, password, user, address).then((data) => {
+    return Promise.resolve(data);
+  }).catch(() => {
+    return Promise.reject();
+  });
 };
 
-const login = (email, password) => db.one(`SELECT * FROM users 
-WHERE email =$1`, email)
-  .then((data) => {
-    const passwordIsValid = bcrypt.compareSync(password, data.password);
-    const token = jwt.sign({ id: data.id }, process.env.JWT_SECRET, {
-      expiresIn: 86400,
-    });
-    if (!passwordIsValid) {
-      return Promise.reject(Error);
-    }
-    const user = {
-      id: data.id,
-      username: data.name,
-      email: data.email,
-      token
-    };
-
-    return Promise.resolve(user);
-  }).catch(e => Promise.reject(e));
+const login = (email, password) => {
+  return loginDb(email, password).then((data) => {
+    return Promise.resolve(data);
+  }).catch(() => {
+    return Promise.reject();
+  });
+};
 
 export {
   createUser,

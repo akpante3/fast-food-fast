@@ -9,14 +9,15 @@ address text not null
 
 CREATE TABLE IF NOT EXISTS menu
 (
-  foodId serial NOT NULL primary key,
-  food text not null
+  foodId serial NOT NULL primary key on delete cascade,
+  food text not null,
+  price varchar(15) not null,
 );
 
 CREATE TABLE IF NOT EXISTS orders
 (
   quantity integer not null,
-  id serial NOT NULL primary key,
+  id serial NOT NULL primary key on delete cascade,
   timeOrdered varchar(50) not null,
   foodid integer not null REFERENCES menu(foodId),
   userid integer not null REFERENCES users(id),

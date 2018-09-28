@@ -8,12 +8,9 @@ const menuDb = () => {
     });
 };
 
-const newfoodDb = (food, username) => {
-  if (username !== 'foodamin') {
-    return Promise.reject(new Error('this Feature is only avaliable to the admin'));
-  }
-  return db.one(`INSERT INTO menu (food)
-       VALUES($1) RETURNING foodId, food`, food)
+const newfoodDb = (food, price) => {
+  return db.one(`INSERT INTO menu (food, price)
+       VALUES($1, $2) RETURNING foodId, food, price`, [food, price])
     .then((data) => {
       return Promise.resolve(data);
     });
@@ -87,14 +84,15 @@ const userOrdersDb = (id) => {
       return Promise.resolve(data);
     });
 };
-
 const statusDb = (id, statusUpdate) => {
-  return db.one(`UPDATE orders SET status='${statusUpdate}'
-   WHERE orderid = '${id}'`)
-    .then(() => {
-      return Promise.resolve('status was updated successfully');
-    }).catch((error) => {
-      console.log(error.message);
+  return db.any(`UPDATE orders SET status='${statusUpdate}'
+   WHERE orderid = '${id}' RETURNING * `)
+    .then((data) => {
+      if (data) {
+        return Promise.resolve(data);
+      }
+    }).catch(() => {
+      return Promise.reject();
     });
 };
 export {

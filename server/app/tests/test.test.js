@@ -6,21 +6,21 @@ import { db } from '../db/dbconnect';
 let token;
 let pin;
 let food;
+let foodID;
+let userid;
 
 before((done) => {
-  db.query('delete from orders');
-  db.query('delete from users');
-  db.query('delete from menu');
+  db.query('DELETE FROM users');
   request(app)
     .post('/api/v1/auth/signup')
     .send({
       email: 'david@yahoo.com',
-      username: 'foodamin',
+      username: 'foodadmin',
       password: '123456787',
       address: '10adenekan fadeyi'
     })
     .end((err, res) => {
-      token = res.body.data;// Or something
+      token = res.body.data;
     });
 
   request(app)
@@ -37,11 +37,12 @@ before((done) => {
   done();
 });
 
+
 describe('POST /api/v1/auth/signup', () => {
   it('should sign up a user when all the avaliable data is complete', (done) => {
     const user = {
       email: 'denmo@yahoo.com',
-      username: 'foodamin',
+      username: 'foodadmin',
       password: '123456787',
       address: '10adenekan fadeyi'
     };
@@ -54,10 +55,9 @@ describe('POST /api/v1/auth/signup', () => {
       });
   });
 
-  it('should sign up a user when all the avaliable data is complete', (done) => {
+  it('should not sign up a user when email is missing', (done) => {
     const user = {
-      email: 'd@yahoo.com',
-      username: 'akpante23/..',
+      username: 'akpante23',
       password: '123456787',
       address: '10adenekan fadeyi'
     };
@@ -71,10 +71,11 @@ describe('POST /api/v1/auth/signup', () => {
   });
 
 
-  it('should not create a user when email is incorrect', (done) => {
+  it('should not sign up a username when username is not avaliable', (done) => {
     const user = {
-      email: 'susayahoo.com',
+      email: 'denmo@yahoo.com',
       password: '123456787',
+      address: '10adenekan fadeyi'
     };
     request(app)
       .post('/api/v1/auth/signup')
@@ -89,11 +90,26 @@ describe('POST /api/v1/auth/signup', () => {
       });
   });
 
-  it(`it should not create a new user when the sign up 
-    properties are not complete`, (done) => {
+  it(`it should not create a new user when password
+  is missing`, (done) => {
     const user = {
-      email: 'susan@yahoo.com',
-      username: 'akpante',
+      email: 'denmo@yahoo.com',
+      username: 'foodadmin',
+      address: '10adenekan fadeyi'
+    };
+    request(app)
+      .post('/api/v1/auth/signup')
+      .set('Accept', 'application/json')
+      .send(user)
+      .expect(400)
+      .end(done);
+  });
+
+  it(`it should not create a new user when password
+  is missing`, (done) => {
+    const user = {
+      email: 'denmo@yahoo.com',
+      username: 'foodadmin',
       password: '123456787',
     };
     request(app)
@@ -118,6 +134,7 @@ describe('POST /api/v1/auth/login', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body.status === 'success');
+        userid = res.body.data;
       })
       .end(done);
   });
@@ -137,10 +154,9 @@ describe('POST /api/v1/auth/login', () => {
       .end(done);
   });
 
-  it('it should not login with incomplete incomplete data', (done) => {
+  it('it should not login when there is no password', (done) => {
     const user = {
       email: 'enuie@yahoo.com',
-      password: 'akp',
     };
     request(app)
       .post('/api/v1/auth/login')
@@ -154,9 +170,8 @@ describe('POST /api/v1/auth/login', () => {
       });
   });
 
-  it('should not log in a user wit the wrong email', (done) => {
+  it('should not log in when there is no email', (done) => {
     const user = {
-      email: 'enuieyahoo.com',
       password: '1234bt5ny6',
     };
     request(app)
@@ -171,9 +186,9 @@ describe('POST /api/v1/auth/login', () => {
       });
   });
 
-  it('it should not log in a user when all the avaliable data is complete', (done) => {
+  it('it should not log in when email is invalid', (done) => {
     const user = {
-      email: 'denmo@yahoo.com',
+      email: 'denmoyahoo.com',
       password: '12345677',
     };
     request(app)
@@ -188,11 +203,12 @@ describe('POST /api/v1/auth/login', () => {
       });
   });
 });
-
+// post menu
 describe('POST /api/v1/menu', () => {
   it('should post new food on the app', (done) => {
     const post = {
-      food: 'garri'
+      food: 'garri',
+      price: '1000'
     };
     request(app)
       .post('/api/v1/menu')
@@ -201,6 +217,9 @@ describe('POST /api/v1/menu', () => {
       .expect(201)
       .expect((res) => {
         expect(res.body.status === 'success');
+        let { foodid } = res.body.data;
+        food = res.body.data;
+        foodID = foodid;
       })
       .end(() => {
         done();
@@ -208,9 +227,14 @@ describe('POST /api/v1/menu', () => {
   });
 
   it('should not post a meal with an invalid token', (done) => {
+    const post = {
+      food: 'garri',
+      price: '1000'
+    };
     request(app)
       .post('/api/v1/menu')
       .set('accessToken', 'bgiugifbugbui')
+      .send(post)
       .expect(201)
       .expect((res) => {
         expect(res.body.status === 'failure');
@@ -220,11 +244,49 @@ describe('POST /api/v1/menu', () => {
       });
   });
 
-  it('should not post food when token is not found', (done) => {
+  it('should not post when user is not an admin', (done) => {
+    const post = {
+      food: 'garri',
+      price: '1000'
+    };
+    request(app)
+      .post('/api/v1/menu')
+      .set('accessToken', pin)
+      .send(post)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should not post when there is not price property', (done) => {
+    const post = {
+      food: 'garri',
+    };
     request(app)
       .post('/api/v1/menu')
       .set('accessToken', token)
-      .send({})
+      .send(post)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should not post when food property is not avaliable', (done) => {
+    const post = {
+      price: '1000'
+    };
+    request(app)
+      .post('/api/v1/menu')
+      .set('accessToken', token)
+      .send(post)
       .expect(400)
       .expect((res) => {
         expect(res.body.status === 'failure');
@@ -243,7 +305,6 @@ describe('GET /api/v1/menu', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body.status === 'failure');
-        food = res.body;
       })
       .end(() => {
         done();
@@ -252,6 +313,7 @@ describe('GET /api/v1/menu', () => {
     it('should not get menu when token is not found', (done) => {
       request(app)
         .get('/api/v1/menu')
+        .set('accessToken', 'vchtcushjhyg')
         .expect(400)
         .expect((res) => {
           expect(res.body.status === 'failure');
@@ -262,7 +324,7 @@ describe('GET /api/v1/menu', () => {
     });
   });
 });
-
+// post order
 describe('POST /api/v1/orders', () => {
   it('should post an order when required data is complete', (done) => {
     const order1 = {
@@ -271,8 +333,8 @@ describe('POST /api/v1/orders', () => {
       address: '10 round road',
       orders: [
         {
-          foodId: food.quantity,
-          quantity: food.quantity,
+          foodid: foodID,
+          quantity: '6',
         }
       ],
     };
@@ -372,6 +434,19 @@ describe('GET /api/v1/orders/:id', () => {
         done();
       });
   });
+
+  it('should not get menu with an invalid token', (done) => {
+    request(app)
+      .get('/api/v1/orders/15379')
+      .set('accessToken', 'gfratsfthr')
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
 });
 
 // GET all order
@@ -451,6 +526,20 @@ describe('PUT /api/v1/orders', () => {
       .put('/api/v1/orders/234536')
       .send({ status: '' })
       .set('accessToken', token)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should not update status when user is not admin', (done) => {
+    request(app)
+      .put('/api/v1/orders/234536')
+      .send({ status: 'completed' })
+      .set('accessToken', pin)
       .expect(400)
       .expect((res) => {
         expect(res.body.status === 'failure');

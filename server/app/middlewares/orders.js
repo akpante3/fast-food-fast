@@ -24,16 +24,16 @@ const getMenu = (req, res) => {
  * @public
 */
 const postFood = (req, res) => {
-  newFood(req.body.food, req.username).then((posted) => {
+  newFood(req.body.food, req.body.price).then((posted) => {
     res.status(201).send({
       status: 'success',
       message: 'food was posted successfully',
       data: posted,
     });
-  }).catch((error) => {
-    res.status(404).send({
+  }).catch(() => {
+    res.status(400).send({
       status: 'failure',
-      message: error.message,
+      message: 'error,your food was not posted',
     });
   });
 };
@@ -111,10 +111,10 @@ const getUserOrders = (req, res) => {
       message: 'order was succcessfully fetched',
       data: order,
     });
-  }).catch((error) => {
+  }).catch(() => {
     res.status(404).send({
       status: 'failure',
-      message: error.message,
+      message: 'no orders found',
     });
   });
 };
@@ -125,10 +125,11 @@ const getUserOrders = (req, res) => {
  * @public
 */
 const statusUpdate = (req, res) => {
-  status(req.params.id, req.body.status).then(() => {
+  status(req.params.id, req.body.status).then((data) => {
     res.status(200).send({
       status: 'success',
       message: 'status was successfully accepted',
+      data
     });
   }).catch(() => res.status(404).send({
     status: 'failure',

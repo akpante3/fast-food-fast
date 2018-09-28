@@ -1,5 +1,11 @@
 import express from 'express';
-import { authenticate, validateFoodId } from '../middlewares/auth';
+import {
+  authenticate,
+  validateFoodId,
+  foodAdmin,
+  usersAccess,
+  validatePostFood
+} from '../middlewares/auth';
 import {
   getMenu,
   postFood,
@@ -13,11 +19,16 @@ import {
 const ordersRoutes = express.Router();
 
 ordersRoutes.get('/menu', authenticate, getMenu);
-ordersRoutes.post('/menu', authenticate, postFood);
-ordersRoutes.get('/orders', authenticate, allOrders);
+ordersRoutes.post('/menu', authenticate, foodAdmin, validatePostFood, postFood);
+ordersRoutes.get('/orders', authenticate, foodAdmin, allOrders);
 ordersRoutes.post('/orders', authenticate, validateFoodId, newOrder);
-ordersRoutes.get('/orders/:id', authenticate, anOrder);
-ordersRoutes.put('/orders/:id', authenticate, statusUpdate);
-ordersRoutes.get('/orders/:userId/orders', authenticate, getUserOrders);
+ordersRoutes.get('/orders/:id', authenticate, foodAdmin, anOrder);
+ordersRoutes.put('/orders/:id', authenticate, foodAdmin, statusUpdate);
+ordersRoutes.get(
+  '/orders/:userId/orders',
+  authenticate,
+  usersAccess,
+  getUserOrders
+);
 
 export default ordersRoutes;
