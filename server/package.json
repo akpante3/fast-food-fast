@@ -8,7 +8,7 @@
     "start": "node --require babel-core/register app.js ",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "build": "mkdir dist && babel server -s -d dist",
-    "debug": "node --inspect-brk bin/dev "
+    "debug": "node --inspect-brk --require babel-core/register app.js "
   },
   "author": "obije victor",
   "license": "ISC",
