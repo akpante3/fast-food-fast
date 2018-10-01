@@ -49,7 +49,8 @@ const validate = (req, res, next) => {
 
 const validatePostFood = (req, res, next) => {
   const price = /^\d+$/.test(req.body.price);
-  if (!req.body.food) {
+  const food = /^[a-zA-Z]+$/.test(req.body.food);
+  if (food !== true || !req.body.food) {
     return missing(res, 'food');
   }
   if (price !== true || !req.body.price) {
@@ -68,11 +69,11 @@ const validateFoodId = (req, res, next) => {
   } = req.body;
   const phoneNumber = /^\d+$/.test(number);
 
-  if (!validateEmail(email)) {
+  if (!validateEmail(email) || email.length > 50) {
     return missing(res, 'email');
   } if (phoneNumber !== true || number.length > 14) {
     return missing(res, 'phone number');
-  } else if (!address) {
+  } else if (!address || address.length > 100) {
     return missing(res, 'address');
   } else if (!orders) {
     return missing(res, 'orders');
@@ -117,13 +118,13 @@ const authNewUser = (req, res, next) => {
   const userName = (req.body.username).trim();
   const email = validateEmail(req.body.email);
 
-  if (!email) {
+  if (!email || email.length > 50) {
     return missing(res, 'email');
-  } if (!req.body.password) {
+  } if (!req.body.password || (req.body.password).length > 50) {
     return missing(res, 'password');
-  } else if (!userName) {
+  } else if (!userName || userName.length > 30) {
     return missing(res, 'username');
-  } else if (!req.body.address) {
+  } else if (!req.body.address || (req.body.address).length > 100) {
     return missing(res, 'address');
   }
 

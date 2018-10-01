@@ -1,10 +1,10 @@
  CREATE TABLE IF NOT EXISTS users
 (
 id serial primary key,
-email text not null unique,
-password text not null,
-name text not null,
-address text not null
+email varchar(80) not null unique,
+password varchar(80) not null,
+name varchar(80) not null,
+address varchar(150) not null
 );
 
 CREATE TABLE IF NOT EXISTS menu
