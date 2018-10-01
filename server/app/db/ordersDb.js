@@ -23,6 +23,7 @@ const postOrdersDb = (ordered, userId) => {
   const month = time.getMonth();
   const year = time.getFullYear();
   const timeOrdered = `${date} - ${month} - ${year}`;
+  const decline = 'order was not posted';
 
   const {
     number,
@@ -38,7 +39,9 @@ const postOrdersDb = (ordered, userId) => {
         `INSERT INTO orders(quantity,timeOrdered,foodid,address,email,orderid,userid,status)
       VALUES($1,$2,$3,$4,$5,$6,$7,$8)`,
         [order.quantity, timeOrdered, order.foodid, address, email, orderID, userId, 'pending']
-      );
+      ).catch(() => {
+        return Promise.reject(decline);
+      });
     });
   }).then(() => {
     const details = {
@@ -51,8 +54,6 @@ const postOrdersDb = (ordered, userId) => {
       orders
     };
     return Promise.resolve(details);
-  }).catch((error) => {
-    return Promise.reject(error.message);
   });
 };
 
@@ -91,7 +92,6 @@ const statusDb = (id, statusUpdate) => {
       if (data) {
         return Promise.resolve(data);
       }
-    }).catch(() => {
       return Promise.reject();
     });
 };

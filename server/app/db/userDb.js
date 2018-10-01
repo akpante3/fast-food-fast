@@ -31,8 +31,6 @@ WHERE email =$1`, email)
       }
       const user = {
         id: data.id,
-        username: data.name,
-        email: data.email,
         token
       };
 

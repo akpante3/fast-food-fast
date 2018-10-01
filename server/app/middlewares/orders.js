@@ -51,9 +51,9 @@ const newOrder = (req, res) => {
       message: 'orders were posted succcessfully',
       data: result,
     });
-  }).catch(() => res.status(400).send({
+  }).catch(data => res.status(400).send({
     status: 'failure',
-    message: 'please input a valid order',
+    message: data,
   }));
 };
 
@@ -90,11 +90,6 @@ const allOrders = (req, res) => {
       status: 'success',
       message: 'order was succcessfully fetched',
       data: order,
-    });
-  }).catch((error) => {
-    res.status(404).send({
-      status: 'failure',
-      message: error.message
     });
   });
 };

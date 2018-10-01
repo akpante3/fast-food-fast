@@ -7,7 +7,7 @@ const newUsers = (req, res) => {
       res.status(201).send({
         status: 'success',
         message: 'user was created succcessfully',
-        data: token,
+        data: { token },
       });
     }).catch(() => {
       res.status(400).send({

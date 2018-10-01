@@ -8,7 +8,7 @@ const validateEmail = (email) => {
 const missing = (report, value) => {
   return report.status(400).send({
     status: 'failure',
-    message: `please input a valid ${value}`,
+    message: `please ${value} is invalid`,
   });
 };
 
@@ -48,14 +48,17 @@ const validate = (req, res, next) => {
 };
 
 const validatePostFood = (req, res, next) => {
-  if (!req.body.price) {
-    return missing(res, 'price');
+  const price = /^\d+$/.test(req.body.price);
+  if (!req.body.food) {
+    return missing(res, 'food');
   }
-  if (!req.body.price) {
+  if (price !== true || !req.body.price) {
     return missing(res, 'price');
   }
   next();
 };
+
+
 const validateFoodId = (req, res, next) => {
   const {
     orders,
@@ -63,11 +66,12 @@ const validateFoodId = (req, res, next) => {
     number,
     address
   } = req.body;
+  const phoneNumber = /^\d+$/.test(number);
 
   if (!validateEmail(email)) {
     return missing(res, 'email');
-  } if (!number) {
-    return missing(res, 'number');
+  } if (phoneNumber !== true || number.length > 14) {
+    return missing(res, 'phone number');
   } else if (!address) {
     return missing(res, 'address');
   } else if (!orders) {
@@ -75,12 +79,21 @@ const validateFoodId = (req, res, next) => {
   }
   const declineFood = [];
   const declineQuantity = [];
+  db.any('SELECT FROM users WHERE id = $1', req.userId).then((data) => {
+    if (data.length === 0) {
+      return missing(res, 'user');
+    }
+  });
+
   return db.tx((data) => {
     return orders.map((order) => {
-      if (!order.quantity) {
+      const quantity = /^\d+$/.test(order.quantity);
+      const foodid = /^\d+$/.test(order.foodid);
+
+      if (quantity !== true || (order.quantity).length > 3) {
         declineQuantity.push(order);
       }
-      if (!order.foodid) {
+      if (foodid !== true) {
         declineFood.push(order);
       }
       return data.any('select * from menu where foodid=$1', order.foodid).then((foodid) => {
@@ -97,34 +110,23 @@ const validateFoodId = (req, res, next) => {
       return missing(res, 'quantity');
     }
     next();
-  }).catch(() => {
-    return res.status(400).send({
-      status: 'failure',
-      message: 'invalid request',
-    });
   });
 };
 
 const authNewUser = (req, res, next) => {
-  const userName = req.body.username;
+  const userName = (req.body.username).trim();
+  const email = validateEmail(req.body.email);
 
-
-  if (!req.body.email) {
+  if (!email) {
     return missing(res, 'email');
   } if (!req.body.password) {
     return missing(res, 'password');
-  } else if (!req.body.username) {
+  } else if (!userName) {
     return missing(res, 'username');
   } else if (!req.body.address) {
     return missing(res, 'address');
   }
 
-  if (!validateEmail(req.body.email) || !(/^[a-zA-Z]+$/.test(userName.trim()))) {
-    return res.status(400).send({
-      status: 'failure',
-      message: 'invalid email or username,please input a valid email',
-    });
-  }
   next();
 };
 

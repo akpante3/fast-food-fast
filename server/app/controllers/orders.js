@@ -38,8 +38,8 @@ const newFood = (food, price) => {
 const postOrders = (ordered, userId) => {
   return postOrdersDb(ordered, userId).then((data) => {
     return Promise.resolve(data);
-  }).catch(() => {
-    return Promise.reject();
+  }).catch((data) => {
+    return Promise.reject(data);
   });
 };
 /**  Get all order
@@ -48,9 +48,6 @@ const postOrders = (ordered, userId) => {
  * @public
 */
 const getAll = (username) => {
-  if (username !== 'foodadmin') {
-    return Promise.reject(new Error('this Feature is only avaliable to the admin'));
-  }
   return getAllDb(username).then((data) => {
     return Promise.resolve(data);
   });
