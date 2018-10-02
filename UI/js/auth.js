@@ -12,7 +12,7 @@ $(document).ready(() => {
 
         errorDisplay()
         
-        if (!validateEmail(email) || email.length > 50) {
+        if ( email || email.length > 50) {
             $('form.sign-container').append(`<p class='error-message'>please input a valid email</p>`)
             message.innerHTML= 'invalid email please input a valid email';
             message.style.display = 'block'
@@ -80,6 +80,34 @@ $(document).ready(() => {
             }).catch((error) => {
                 console.log(error);
             });
+        });
+
+        $('button.loginbtn').click((e) => {
+            e.preventDefault();
+           const email = $('input.email').val();
+           const password = $('input.password').val();
+    
+           fetch('http://localhost:8000/api/v1/auth/login', {
+            method : 'post',
+            body : JSON.stringify({email, password}),
+            headers : {
+                'Accept' : 'application/json',
+                'Content-Type':'application/json'
+            }
+    
+            }).then(res => {
+                res.json().then(data => {
+                    if (data.status === 'failure'){
+                        errorDisplay()
+                        message.style.display = 'block'
+                        return message.innerHTML = data.message;
+                    } 
+                    const token = data.data.token;
+                    setAccessToken(token)
+                    location.href =  './../UI/index.html';                
+                });
+            });
+    
         });
         
 });
