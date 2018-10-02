@@ -20,12 +20,12 @@ const menu = () => {
 /**  POST new  food
  *  @param {string} food
  *  @param {string} price
- * @param {string} username
+ * @param {string} image
  * @return {obj} new food
  * @public
 */
-const newFood = (food, price) => {
-  return newfoodDb(food, price).then((data) => {
+const newFood = (food, price, image) => {
+  return newfoodDb(food, price, image).then((data) => {
     return Promise.resolve(data);
   });
 };

@@ -8,10 +8,13 @@ const menuDb = () => {
     });
 };
 
-const newfoodDb = (food, price) => {
-  return db.one(`INSERT INTO menu (food, price)
-       VALUES($1, $2) RETURNING foodId, food, price`, [food, price])
+const newfoodDb = (food, price, image) => {
+  return db.one(`INSERT INTO menu (food, price, image)
+       VALUES($1, $2, $3) RETURNING foodId, food, price, image`, [food, price, image])
     .then((data) => {
+      if (!data) {
+        return Promise.reject();
+      }
       return Promise.resolve(data);
     });
 };

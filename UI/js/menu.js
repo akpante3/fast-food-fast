@@ -12,11 +12,12 @@ $('document').ready(() =>  {
        e.preventDefault();
        const food =$('input.food').val();
        const price = $('input.price').val();
+       const image = $('input.image').val();
 
        const token = window.localStorage.getItem(Access_Key);
        fetch('http://localhost:8000/api/v1/menu', {
             method : 'post',
-            body : JSON.stringify({food, price }),
+            body : JSON.stringify({food, price, image}),
             headers : {
                 'Accept' : 'application/json',
                 'Content-Type':'application/json',

@@ -24,7 +24,7 @@ const getMenu = (req, res) => {
  * @public
 */
 const postFood = (req, res) => {
-  newFood(req.body.food, req.body.price).then((posted) => {
+  newFood(req.body.food, req.body.price, req.body.image).then((posted) => {
     res.status(201).send({
       status: 'success',
       message: 'food was posted successfully',

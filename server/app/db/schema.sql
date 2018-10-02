@@ -1,3 +1,6 @@
+-- CREATE EXTENSION IF NOT EXISTS pgcrypto
+-- id UUID PRIMRY KEY DEFAULT gen_random_uuid() 
+ 
  CREATE TABLE IF NOT EXISTS users
 (
 id serial primary key,
@@ -11,7 +14,8 @@ CREATE TABLE IF NOT EXISTS menu
 (
   foodId serial NOT NULL primary key,
   food text not null,
-  price varchar(15) not null
+  price varchar(15) not null,
+  image text null
 );
 
 CREATE TABLE IF NOT EXISTS orders

@@ -3,7 +3,7 @@ $('document').ready(() =>  {
     const appendMenu = (menu) => {
 
         menu.forEach(meal => {
-            const template =`<div><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRymeOAHIZOShcIgKfAXzn04bASkye0gr2Sqmscl_hKrfaqwVdp" alt="food"><p> ${meal.food}  </p>
+            const template =`<div><img src="${meal.image}" alt="food"><p> ${meal.food}  </p>
             <br>
             <p>Price: ${meal.price}</p>
             <br>
