@@ -13,7 +13,6 @@ import {
  * @public
 */
 const createUser = (email, password, user, address) => {
-  debugger;
   return creteuserDb(email, password, user, address).then((data) => {
     return Promise.resolve(data);
   }).catch(() => {
