@@ -19,7 +19,9 @@ const toggle_next= (elem) =>  {
     } while (elem && elem.nodeType != 1);
     return elem
 }
-
+/**  toggle option
+ * @public
+*/
 const toggle_info = (elem) => {
     const nextElem = toggle_next(elem);
     if (nextElem.style.display === 'block'){
@@ -35,7 +37,10 @@ const toggle_info = (elem) => {
          </div>`
         } 
 }
-
+/**buttons 
+ * @param {object} elem(this)
+ * @public
+*/
 const accept_btn = (elem) =>{
     console.log(elem.parentElement)
     elem.parentElement.innerHTML =`<button class="deliver" onclick="deliver(this)">deliver</button>`;
