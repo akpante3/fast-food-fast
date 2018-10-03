@@ -588,6 +588,19 @@ describe('GET /api/v1/orders/:id', () => {
         done();
       });
   });
+
+  it('should not get an invalid orderid', (done) => {
+    request(app)
+      .get('/api/v1/orders/15379')
+      .set('accessToken', userToken)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
 });
 
 // GET all order
@@ -696,6 +709,20 @@ describe('PUT /api/v1/orders', () => {
       .send({ status: 'completed' })
       .set('accessToken', userToken)
       .expect(200)
+      .expect((res) => {
+        expect(res.body.status === 'failure');
+      })
+      .end(() => {
+        done();
+      });
+  });
+
+  it('should not update status when user is not admin', (done) => {
+    request(app)
+      .put('/api/v1/orders/234536')
+      .send({ status: 'completed' })
+      .set('accessToken', pin)
+      .expect(400)
       .expect((res) => {
         expect(res.body.status === 'failure');
       })

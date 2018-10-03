@@ -24,7 +24,7 @@ const getMenu = (req, res) => {
  * @public
 */
 const postFood = (req, res) => {
-  newFood(req.body.food, req.body.price).then((posted) => {
+  newFood(req.body.food, req.body.price, req.body.image).then((posted) => {
     res.status(201).send({
       status: 'success',
       message: 'food was posted successfully',
@@ -88,7 +88,7 @@ const allOrders = (req, res) => {
   getAll(req.username).then((order) => {
     res.send({
       status: 'success',
-      message: 'order was succcessfully fetched',
+      message: 'orders was succcessfully fetched',
       data: order,
     });
   });
@@ -123,7 +123,7 @@ const statusUpdate = (req, res) => {
   status(req.params.id, req.body.status).then((data) => {
     res.status(200).send({
       status: 'success',
-      message: 'status was successfully accepted',
+      message: 'status was successfully updated',
       data
     });
   }).catch(() => res.status(404).send({
