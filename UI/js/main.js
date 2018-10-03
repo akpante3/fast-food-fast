@@ -13,13 +13,20 @@ const toShoppingCart = (elem) => {
   <button class="add-cart" onclick="addCart(this)"><i class="fas fa-shopping-cart fa-1x"></i>  add to cart</button>
   `
 }
+/** toggle option
+ * *@param {object} e
+ * @public
+*/
 const toggle_next= (elem) =>  {
     do{
         elem = elem.nextSibling;
     } while (elem && elem.nodeType != 1);
     return elem
 }
-
+/** toggle info
+ * *@param {object} e
+ * @public
+*/
 const toggle_info = (elem) => {
     const nextElem = toggle_next(elem);
     if (nextElem.style.display === 'block'){
@@ -35,7 +42,10 @@ const toggle_info = (elem) => {
          </div>`
         } 
 }
-
+/** buttons
+ * *@param {object} e
+ * @public
+*/
 const accept_btn = (elem) =>{
     console.log(elem.parentElement)
     elem.parentElement.innerHTML =`<button class="deliver" onclick="deliver(this)">deliver</button>`;

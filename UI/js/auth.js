@@ -6,7 +6,14 @@ $(document).ready(() => {
             message.style.display = 'none';
         }
     }
-
+    /**  validate sign up
+     * @param {string} email
+     * @param {string} password
+     * @param {string} address
+     * @param {string} username
+     * @return {string} token
+     * @public
+    */
     const validateSignup = (email, password, address, username) =>{  
         const userName = /^[a-zA-Z0-9- ,_]*$/.test(username); 
 
@@ -28,11 +35,13 @@ $(document).ready(() => {
             return;
           }
     }
-
-
+ 
         const Access_Key = 'access_token'
         console.log(window.localStorage.getItem(Access_Key))
-       
+        /**  save token to local storage
+         * @param {string} email
+         * @public
+        */
         const setAccessToken = (token) => {
             if(window.localStorage.getItem(Access_Key) === null){
                 window.localStorage.setItem(Access_Key, token);
@@ -41,12 +50,18 @@ $(document).ready(() => {
             localStorage.removeItem(Access_Key);
             window.localStorage.setItem(Access_Key, token);
         }
-
+        /**  email validation
+         * @param {string} email
+         * @public
+        */
         const validateEmail = (email) => {
             const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
           };    
-    
+        /** on click signup button
+         * *@param {object} e
+         * @public
+        */
         $('button.signupbtn').click((e) => {
             e.preventDefault();
             const email = $('input.email').val();
@@ -81,7 +96,10 @@ $(document).ready(() => {
                 console.log(error);
             });
         });
-
+         /** on click login button
+         * *@param {object} e
+         * @public
+        */
         $('button.loginbtn').click((e) => {
             e.preventDefault();
            const email = $('input.email').val();
