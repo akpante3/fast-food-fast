@@ -84,6 +84,10 @@
   }
 
 /* SIGN-UP LOG-IN FORM */
+.error-message{
+    color: red;
+    display: none;
+}
 .sign-container{
     width: 30%;
     border-radius: 20px;
