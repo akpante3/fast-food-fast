@@ -1,13 +1,19 @@
 $('document').ready(() =>  {
     const Access_Key = 'access_token';
     const message = document.querySelector('.error-message');
-
+    /**  display error message 
+     * @public
+    */
     const errorDisplay = () => {
         if (message.style.display = 'block'){
             message.style.display = 'none';
         }
     }
-
+      /**  POST food onclick function
+     * @param {object} e
+     * @return {string} error message 
+     * @public
+    */
     $('button.postbtn').click((e) => {
        e.preventDefault();
        const food =$('input.food').val();
