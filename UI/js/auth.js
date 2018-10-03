@@ -1,18 +1,27 @@
 $(document).ready(() => {
     const message = document.querySelector('.error-message');
-
+    /**  display error message 
+     * @public
+    */
     const errorDisplay = () => {
         if (message.style.display = 'block'){
             message.style.display = 'none';
         }
     }
-
+    /**  POST an order
+     * @param {string} email
+     * @param {string} password
+     * @param {string} address
+     * @param {string} username
+     * @return {string} error message 
+     * @public
+    */
     const validateSignup = (email, password, address, username) =>{  
         const userName = /^[a-zA-Z0-9- ,_]*$/.test(username); 
 
         errorDisplay()
         
-        if (!validateEmail(email) || email.length > 50) {
+        if ( email || email.length > 50) {
             $('form.sign-container').append(`<p class='error-message'>please input a valid email</p>`)
             message.innerHTML= 'invalid email please input a valid email';
             message.style.display = 'block'
@@ -29,10 +38,17 @@ $(document).ready(() => {
           }
     }
 
-
+        /**  POST an order
+         * @return {string} error message 
+         * @public
+        */
         const Access_Key = 'access_token'
         console.log(window.localStorage.getItem(Access_Key))
-       
+        
+        /** save to token to localstorage
+         *  @return {string} error message 
+         * @public
+        */
         const setAccessToken = (token) => {
             if(window.localStorage.getItem(Access_Key) === null){
                 window.localStorage.setItem(Access_Key, token);
@@ -42,11 +58,12 @@ $(document).ready(() => {
             window.localStorage.setItem(Access_Key, token);
         }
 
-        const validateEmail = (email) => {
-            const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
-          };    
-    
+        
+        /** 
+         * @param {object} e
+         * @return {string} access token
+         * @public
+        */   
         $('button.signupbtn').click((e) => {
             e.preventDefault();
             const email = $('input.email').val();
