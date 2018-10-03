@@ -49,14 +49,31 @@ const restore = (elem) => {
 const deliver = (elem) => {
     elem.parentElement.innerHTML ='<h4>order has been delivered</h4>';
 }
-const deleteCart = (elem) => {
-    elem.parentElement.style.display='none';
-}
+
 let num = 0;
 
 const addCart = (elem) => {
+    let order = [];
+    const foodid = elem.getAttribute("data-foodid");
+    const food = elem.getAttribute("data-food");
+    const price = elem.getAttribute("data-price");
+    const items = localStorage.getItem("orders");
+    const storage = JSON.parse(localStorage.getItem("orders"));
+   
+    if(items != null) {
+        order = JSON.parse(items)
+    }
+    const item = {
+        foodid,
+        food,
+        price
+    }
+
+    order.push(item);
+    localStorage.setItem("orders", JSON.stringify(order));
+
     elem.parentElement.innerHTML= `<button class="add-cart"><i class="fas fa-shopping-cart fa-1x"></i>  added to cart</button> `;
-    num += 1
+    num = storage.length + 1;
     shoppingCart.innerHTML =` ${num}`;
 } 
 

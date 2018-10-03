@@ -29,7 +29,6 @@ const postOrdersDb = (ordered, userId) => {
   const decline = 'order was not posted';
 
   const {
-    number,
     address,
     email,
     orders
@@ -41,14 +40,13 @@ const postOrdersDb = (ordered, userId) => {
       return data.one(
         `INSERT INTO orders(quantity,timeOrdered,foodid,address,email,orderid,userid,status)
       VALUES($1,$2,$3,$4,$5,$6,$7,$8)`,
-        [order.quantity, timeOrdered, order.foodid, address, email, orderID, userId, 'pending']
+        [order.quantity, timeOrdered, order.foodid, address, email, orderID, userId, 'New']
       ).catch(() => {
         return Promise.reject(decline);
       });
     });
   }).then(() => {
     const details = {
-      number,
       address,
       email,
       timeOrdered,
