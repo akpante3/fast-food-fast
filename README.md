@@ -42,34 +42,119 @@ npm test
 - **[<code>GET</code> api/v1/orders/:id]**
 - **[<code>POST</code>api/v1/orders]**
 - **[<code>PUT</code>api/v1/orders/:id]**
+- **[<code>POST</code>api/v1/auth/login]**
+- **[<code>POST</code>api/v1/auth/signup]**
+- **[<code>GET</code>api/v1/orders/auth/orders/:id/orders]**
+- **[<code>POST</code>api/v1/menu]**
+- **[<code>GET</code>api/v1/menu]**
+
 
 ## How to use API on POSTMAN
 
-- **[<code>GET</code>api/v1/menu]**<br/> 
-    -get all the avaliable food on the app<br/>
+<table>
 
-- **[<code>POST</code>api/v1/orders]**<br/>
-    -post an order on the app<br/>
-    -required data:   {<br/>
-         foodId:---*type: number,input foodId of food you want to order,go to* **<code>GET</code>api/v1/menu** *to get foodId of food*<br/>
-         quantity:---*type: number*<br/>
-      }<br/>
-     
-- **[<code>GET</code>api/v1/orders]** <br/>
-    -get all orders that have been posted on the app<br/>
+<tr><th>HTTP VERB</th><th>API ENDPOINT</th><th>FUNCTION</th><th>INPUT</th><th>OUTPUT</th></tr>
 
-- **[<code>GET</code> api/v1/orders/:id]**<br/>
-    -get a particular order<br/>
-    -params.id is the order id, **<code>GET</code>api/v1/orders** to see all orders and id
-      
-- **[<code>PUT</code>api/v1/orders/:id]**<br/>
-         -id.params is the order id,**<code>GET</code>api/v1/orders** to see all orders and id<br/> 
-         -required data:   { 
-         <br/>
-                status : 'completed','decline'---*type: sting* <br/>
-           }<br/>
+<tr>
+<td>POST</td> <td>api/v1/auth/signup</td>  <td>Signup user</td>
+<td>
+{<br> name: "string",<br>email: "string",<br>phone: "string",<br> address: "string",<br>password: "string"<br>}
+</td>
+<td>
+{<br> message: "string",<br>token: "string"<br>}
+</td>
+</tr>
 
- 
+<tr>
+<td>POST</td> <td>api/v1/auth/login</td>  <td>Login user</td>
+<td>
+{<br> email: "string",<br>password: "string"<br>}
+</td>
+<td>
+{<br> message: "string",<br>token: "string"<br>}
+</td>
+</tr>
+
+<tr>
+<td>POST</td> <td>api/v1/menu</td>  <td>Create new menu</td>
+<td>
+{<br> menu: "string",<br>description: "string",<br>category: "string",<br>quantity: "string",<br>price: "string"<br>}<br>"Authorization": "token"
+</td>
+<td>{<br>message: "string"<br>menu: {object}<br>}</td>
+</tr>
+
+<tr>
+<td>GET</td> <td>api/v1/menu</td>  <td>Get All Available Menu</td>
+<td>"Authorization": "token" or undefined</td>
+<td>{<br>message: "string"<br>allMenu: {object}<br>}</td>
+</tr>
+
+<tr>
+<td>GET</td> <td>api/v1/menu/:menuId</td>  <td>Get A Specific Menu</td>
+<td>menuId: "Number"<br>"Authorization": "token"</td>
+<td>{<br>message: "string"<br>foundMenu: {object}<br>}</td>
+</tr>
+
+<tr>
+<td>PUT</td> <td>api/v1/menu/:menuId</td>  <td>Update menu</td>
+<td>
+{<br> menu: "string",<br>description: "string",<br>category: "string",<br>quantity: "string",<br>price: "string"<br>}
+<br>menuId: "Number"
+<br>"Authorization": "token"
+</td>
+<td>{<br>message: "string"<br>menu: {object}<br>}</td>
+</tr>
+
+<tr>
+<td>DELETE</td> <td>api/v1/menu/:menuId</td>  <td>Update menu</td>
+<td>
+menuId: "Number"<br>"Authorization": "token"
+</td>
+<td>{<br>message: "string"<br>menu: {object}<br>}</td>
+</tr>
+
+<tr><td>POST</td> <td>api/v1/orders</td>  <td>Place order</td>
+<td>{<br>orderItems: [<br>{<br>menuId: "Number",<br>quantity: "Number"<br>}<br>],<br>location: "string" or undefined,<br>}<br>"Authorization": "token"</td>
+<td>{<br>message: "string",<br>newOrder: {object}<br>}</td>
+</tr>
+
+<tr>
+<td>GET</td> <td>api/v1/users/:userId/orders</td>  <td>Get user order history</td>
+<td>userId: "Number"<br>"Authorization": "token"</td>
+<td>{<br>message: "string"<br>orderHistory: {object}<br>}</td>
+</tr>
+
+<tr>
+<td>GET</td> <td>api/v1/orders</td>  <td>Get all orders</td>
+<td>"Authorization": "token"</td>
+<td>{<br>message: "string"<br>allOrders: {object}<br>}</td>
+</tr>
+
+<tr>
+<td>GET</td> <td>api/v1/orders/:orderId</td>  <td>Get specific order</td>
+<td>"Authorization": "token"</td>
+<td>{<br>message: "string"<br>foundOrder: {object}<br>}</td>
+</tr>
+
+<tr>
+<td>PUT</td> <td>api/v1/orders/:orderId/process</td>  <td>Process specific order</td>
+<td>"Authorization": "token"</td>
+<td>{<br>message: "string"<br>}</td>
+</tr>
+
+<tr>
+<td>PUT</td> <td>api/v1/orders/:orderId/cancel</td>  <td>Cancel specific order</td>
+<td>"Authorization": "token"</td>
+<td>{<br>message: "string"<br>}</td>
+</tr>
+
+<tr>
+<td>PUT</td> <td>api/v1/orders/:orderId/complete</td>  <td>Complete specific order</td>
+<td>"Authorization": "token"</td>
+<td>{<br>message: "string"<br>}</td>
+</tr>
+
+</table>
 
 ## Technologies and Frameworks
 . HTML, 
