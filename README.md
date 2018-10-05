@@ -89,22 +89,6 @@ npm test
 <td>{<br>message: "string"<br>allMenu: {object}<br>}</td>
 </tr>
 
-<tr>
-<td>GET</td> <td>api/v1/menu/:menuId</td>  <td>Get A Specific Menu</td>
-<td>menuId: "Number"<br>"Authorization": "token"</td>
-<td>{<br>message: "string"<br>foundMenu: {object}<br>}</td>
-</tr>
-
-<tr>
-<td>PUT</td> <td>api/v1/menu/:menuId</td>  <td>Update menu</td>
-<td>
-{<br> menu: "string",<br>description: "string",<br>category: "string",<br>quantity: "string",<br>price: "string"<br>}
-<br>menuId: "Number"
-<br>"Authorization": "token"
-</td>
-<td>{<br>message: "string"<br>menu: {object}<br>}</td>
-</tr>
-
 <tr><td>POST</td> <td>api/v1/orders</td>  <td>Place order</td>
 <td>{<br>orderItems: [<br>{<br>menuId: "Number",<br>quantity: "Number"<br>}<br>],<br>location: "string" or undefined,<br>}<br>"Authorization": "token"</td>
 <td>{<br>message: "string",<br>newOrder: {object}<br>}</td>
