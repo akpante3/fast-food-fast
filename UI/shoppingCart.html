@@ -113,12 +113,26 @@
                     </li>
                 </ul>
                 <form>
-                <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" class="password" name="password" required>
+                    <label for="psw"><b>Email</b></label>
+                    <br>
+                    <input type="text" placeholder="Enter Email" class="email" name="email" required>
+                    <br>
+                    <br>
+                    <label for="psw"><b>Number</b></label>
+                    <br>
+                    <input type="text" placeholder="Enter Number" class="number" name="number" required>
+                    <br>
+                    <br> 
+                    <label for="psw"><b>Address</b></label>
+                    <input type="text" placeholder="Enter Address" class="address" name="address" required>
+                    <br>
+                    <br>
+                    <h1>Total:</h1>
+                    <p class="total"></p>
+                    <h4 class="error-message">  N1000</h4>
+                    <button type="submit" id="place-order">Place order</button>               
                 </form>
-                <h1>Total:</h1>
-                <h4 class="total">  N1000</h4>
-                <button id="place-order">Place order</button>
+              <p class="error-message"></p>
             </div>
             <footer>
                 <h3>fast-food-fast   &copy 2018</h3>  
@@ -127,6 +141,7 @@
         <script src="./js/jquery.min.js"></script>
         <script src='./js/main.js'> </script>
         <script src="./js/shoppingCart.js"></script>
+        <script src="./js/postOrder.js"></script>
     </body>
 </html>
 

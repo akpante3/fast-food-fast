@@ -12,7 +12,7 @@ $(document).ready(() => {
 
         errorDisplay()
         
-        if ( email || email.length > 50) {
+        if ( !email || email.length > 50) {
             $('form.sign-container').append(`<p class='error-message'>please input a valid email</p>`)
             message.innerHTML= 'invalid email please input a valid email';
             message.style.display = 'block'
@@ -54,7 +54,7 @@ $(document).ready(() => {
             validateSignup(email, password, address, username);
 
     
-            fetch('http://localhost:8000/api/v1/auth/signup', {
+            fetch('https://fast-food-fast-food.herokuapp.com/api/v1/auth/signup', {
                 method : 'post',
                 body : JSON.stringify({email, password, username, address}),
                 headers : {
@@ -67,7 +67,8 @@ $(document).ready(() => {
                     if (data.status === 'failure'){
                         errorDisplay()
                         message.style.display = 'block'
-                        return message.innerHTML = data.message;
+                        message.innerHTML = data.message;
+                        return 
                     }     
                     const token = data.data.token;
                     setAccessToken(token);
@@ -84,7 +85,7 @@ $(document).ready(() => {
            const email = $('input.email').val();
            const password = $('input.password').val();
     
-           fetch('http://localhost:8000/api/v1/auth/login', {
+           fetch('https://fast-food-fast-food.herokuapp.com/api/v1/auth/login', {
             method : 'post',
             body : JSON.stringify({email, password}),
             headers : {

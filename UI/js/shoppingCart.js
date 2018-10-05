@@ -2,7 +2,7 @@ $('document').ready(() =>  {
     const items = localStorage.getItem("orders");
     const storage = JSON.parse(localStorage.getItem("orders"));
     const total = document.querySelector('.total');
-   
+    console.log(storage);
     const load = () => {
         let totalPrice = null;
         storage.forEach(elem => {

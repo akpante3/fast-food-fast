@@ -6,6 +6,7 @@ $('document').ready(() =>  {
         if (message.style.display = 'block'){
             message.style.display = 'none';
         }
+        message.style.display = 'block'
     }
 
     $('button.postbtn').click((e) => {
@@ -15,7 +16,7 @@ $('document').ready(() =>  {
        const image = $('input.image').val();
 
        const token = window.localStorage.getItem(Access_Key);
-       fetch('http://localhost:8000/api/v1/menu', {
+       fetch('https://fast-food-fast-food.herokuapp.com/api/v1/menu', {
             method : 'post',
             body : JSON.stringify({food, price, image}),
             headers : {
@@ -28,8 +29,8 @@ $('document').ready(() =>  {
            res.json().then(data => {
             if (data.status === 'failure'){
                 errorDisplay()
-                message.style.display = 'block'
-                return message.innerHTML = data.message;
+                message.innerHTML = data.message;
+                return 
             }
             location.href =  './../UI/index.html';
 

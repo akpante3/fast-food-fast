@@ -61,8 +61,9 @@ const addCart = (elem) => {
     const storage = JSON.parse(localStorage.getItem("orders"));
    
     if(items != null) {
-        order = JSON.parse(items)
+        order = JSON.parse(items);
     }
+
     const item = {
         foodid,
         food,

@@ -50,11 +50,18 @@ const validate = (req, res, next) => {
 const validatePostFood = (req, res, next) => {
   const price = /^\d+$/.test(req.body.price);
   const food = /^[a-zA-Z]+$/.test(req.body.food);
+  const isUrl = (s) => {
+    const regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return regexp.test(s);
+  };
   if (food !== true || !req.body.food) {
     return missing(res, 'food');
   }
   if (price !== true || !req.body.price) {
     return missing(res, 'price');
+  }
+  if (isUrl(req.body.image) !== true) {
+    return missing(res, 'url');
   }
   next();
 };
@@ -75,9 +82,10 @@ const validateFoodId = (req, res, next) => {
     return missing(res, 'phone number');
   } else if (!address || address.length > 100) {
     return missing(res, 'address');
-  } else if (!orders) {
+  } else if (!orders || orders.length === 0) {
     return missing(res, 'orders');
   }
+
   const declineFood = [];
   const declineQuantity = [];
   db.any('SELECT FROM users WHERE id = $1', req.userId).then((data) => {
@@ -87,14 +95,13 @@ const validateFoodId = (req, res, next) => {
   });
 
   return db.tx((data) => {
-    return orders.map((order) => {
+    return orders.forEach((order) => {
       const quantity = /^\d+$/.test(order.quantity);
       const foodid = /^\d+$/.test(order.foodid);
-
-      if (quantity !== true || (order.quantity).length > 3) {
+      if (quantity !== true || (order.quantity).length > 3 || !order.quantity) {
         declineQuantity.push(order);
-      }
-      if (foodid !== true) {
+      } else
+      if (!order.foodid || foodid !== true) {
         declineFood.push(order);
       }
       return data.any('select * from menu where foodid=$1', order.foodid).then((foodid) => {
@@ -122,9 +129,9 @@ const authNewUser = (req, res, next) => {
     return missing(res, 'email');
   } if (!req.body.password || (req.body.password).length > 50) {
     return missing(res, 'password');
-  } else if (!userName || userName.length > 30) {
+  } else if (!userName || userName.length > 30 || /^[a-zA-Z0-9- ]*$/.test(userName) === false) {
     return missing(res, 'username');
-  } else if (!req.body.address || (req.body.address).length > 100) {
+  } else if (!req.body.address || (req.body.address).length > 100 || /^[a-zA-Z0-9- ]*$/.test(req.body.address) === false) {
     return missing(res, 'address');
   }
 

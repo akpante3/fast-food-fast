@@ -67,7 +67,7 @@ $(document).ready(() => {
             validateSignup(email, password, address, username);
 
     
-            fetch('http://localhost:8000/api/v1/auth/signup', {
+            fetch('https://fast-food-fast-food.herokuapp.com/api/v1/auth/signup', {
                 method : 'post',
                 body : JSON.stringify({email, password, username, address}),
                 headers : {
@@ -99,7 +99,7 @@ $(document).ready(() => {
            const email = $('input.email').val();
            const password = $('input.password').val();
     
-           fetch('http://localhost:8000/api/v1/auth/login', {
+           fetch('https://fast-food-fast-food.herokuapp.com/api/v1/auth/login', {
             method : 'post',
             body : JSON.stringify({email, password}),
             headers : {
