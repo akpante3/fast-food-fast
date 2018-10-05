@@ -105,21 +105,13 @@ npm test
 <td>{<br>message: "string"<br>menu: {object}<br>}</td>
 </tr>
 
-<tr>
-<td>DELETE</td> <td>api/v1/menu/:menuId</td>  <td>Update menu</td>
-<td>
-menuId: "Number"<br>"Authorization": "token"
-</td>
-<td>{<br>message: "string"<br>menu: {object}<br>}</td>
-</tr>
-
 <tr><td>POST</td> <td>api/v1/orders</td>  <td>Place order</td>
 <td>{<br>orderItems: [<br>{<br>menuId: "Number",<br>quantity: "Number"<br>}<br>],<br>location: "string" or undefined,<br>}<br>"Authorization": "token"</td>
 <td>{<br>message: "string",<br>newOrder: {object}<br>}</td>
 </tr>
 
 <tr>
-<td>GET</td> <td>api/v1/users/:userId/orders</td>  <td>Get user order history</td>
+<td>GET</td> <td>api/v1/orders/:userId/orders</td>  <td>Get user order history</td>
 <td>userId: "Number"<br>"Authorization": "token"</td>
 <td>{<br>message: "string"<br>orderHistory: {object}<br>}</td>
 </tr>
@@ -136,23 +128,9 @@ menuId: "Number"<br>"Authorization": "token"
 <td>{<br>message: "string"<br>foundOrder: {object}<br>}</td>
 </tr>
 
-<tr>
-<td>PUT</td> <td>api/v1/orders/:orderId/process</td>  <td>Process specific order</td>
-<td>"Authorization": "token"</td>
-<td>{<br>message: "string"<br>}</td>
-</tr>
 
-<tr>
-<td>PUT</td> <td>api/v1/orders/:orderId/cancel</td>  <td>Cancel specific order</td>
-<td>"Authorization": "token"</td>
-<td>{<br>message: "string"<br>}</td>
-</tr>
 
-<tr>
-<td>PUT</td> <td>api/v1/orders/:orderId/complete</td>  <td>Complete specific order</td>
-<td>"Authorization": "token"</td>
-<td>{<br>message: "string"<br>}</td>
-</tr>
+
 
 </table>
 
