@@ -22,12 +22,27 @@ const toggle_next= (elem) =>  {
 
 const toggle_info = (elem) => {
     const nextElem = toggle_next(elem);
+    const foodid = elem.getAttribute("data-foodid");
+    const email = elem.getAttribute("data-email");
+    const time = elem.getAttribute("data-time");
+    const quantity = elem.getAttribute("data-quantity");
+    const orderid = elem.getAttribute("data-orderid");
+    const items = localStorage.getItem("orders");
+
     if (nextElem.style.display === 'block'){
          nextElem.style.display = 'none';
         } else {
          nextElem.style.display='block';
          nextElem.innerHTML=`                    
-         <h3>Number of Orders:</h3>
+         <h3>Quantity of Order: ${ quantity}</h3>
+         <br>
+         <h3>food ID: ${ foodid}</h3>
+         <br>
+         <h3>Email: ${ email}</h3>
+         <br>
+         <h3>Date: ${ time}</h3>
+         <br>
+         <h3>order ID: ${ orderid}</h3>
          <br>
          <div>
              <button class="decline" onclick="decline(this)" >Deline</button> <button class="accept" onclick="accept_btn(this); return false">Accept</button>
@@ -35,6 +50,7 @@ const toggle_info = (elem) => {
          </div>`
         } 
 }
+
 
 const accept_btn = (elem) =>{
     console.log(elem.parentElement)

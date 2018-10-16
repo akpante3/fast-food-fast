@@ -8,12 +8,16 @@ $('document').ready(() =>  {
         }
         message.style.display = 'block'
     }
-
+    /** on button click POST new food on the app
+     *  @param {object} e
+     * @public
+    */
     $('button.postbtn').click((e) => {
        e.preventDefault();
        const food =$('input.food').val();
        const price = $('input.price').val();
-       const image = $('input.image').val();
+       const image = localStorage.getItem('imageurl');
+       console.log(image);
 
        const token = window.localStorage.getItem(Access_Key);
        fetch('https://fast-food-fast-food.herokuapp.com/api/v1/menu', {
@@ -32,7 +36,7 @@ $('document').ready(() =>  {
                 message.innerHTML = data.message;
                 return 
             }
-            location.href =  './../UI/index.html';
+            location.href =  './index.html';
 
            });
        }); 

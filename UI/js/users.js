@@ -72,7 +72,7 @@ $(document).ready(() => {
                     }     
                     const token = data.data.token;
                     setAccessToken(token);
-                    location.href =  './../UI/index.html';
+                    location.href =  './index.html';
                 });
                 
             }).catch((error) => {

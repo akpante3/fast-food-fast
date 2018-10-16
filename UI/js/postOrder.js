@@ -7,33 +7,50 @@ $(document).ready(() => {
             message.style.display = 'none';
         }
     }
-
+    /**  POST new  food
+     * @param {string} email
+     * @param {string} address
+     * @param {string} phoneNumber
+     * @return {string} error message 
+     * @public
+    */
     const validateForm = (email, address, phoneNumber) =>{  
         errorDisplay()
         
-        if ( email || email.length > 50) {
-            $('div.shopping-cart').append(`<p class='error-message'> email is not valid, please input valid address</p>`)
+        if ( !email || email.length > 50) {
+            errorDisplay();
+            message.style.display = 'block'
+            message.innerHTML = 'Email is invalid, please input a valid email';
             return;
           } else if (!address || address.length > 100) {
-            $('div.shopping-cart').append(`<p class='error-message'>address is not valid, please input valid address</p>`)
+            errorDisplay();
+            message.style.display = 'block'
+            message.innerHTML = 'Email is invalid, please input a valid email';
             return;
           } else if (!phoneNumber || phoneNumber.length >16) {
-            $('div.shopping-cart').append(`<p class='error-message'>please number is not valid</p>`)
+            errorDisplay();
+            message.style.display = 'block'
+            message.innerHTML = 'Email is invalid, please input a valid email';
             return;
           } 
     }
-
+    /** click event to fetch the'post an order' Api endpoint
+     *  @param {object} e 
+     * @public
+    */
     $('button#place-order').click((e) => {
         e.preventDefault();
         const email = $('input.email').val();
         const address = $('input.address').val();
         const number = $('input.number').val();
         const message = document.querySelector('.error-message');
+        const list = JSON.parse(localStorage.getItem("orders"));
         const orders = [];
         const foodList = [];
-        const list = JSON.parse(localStorage.getItem("orders"));
+        let price = null;
+        
 
-        // validateForm(email, address, phoneNumber);
+        // validateForm(email, address, number);
         
         const validOrder = () => {
           list.map(element => {
@@ -43,6 +60,7 @@ $(document).ready(() => {
                     foodid: element.foodid,
                     quantity: element.quantity
                 });
+                price += parseInt(element.price) * parseInt(element.quantity);
                 return
             }
             foodList.push(element);
@@ -51,8 +69,6 @@ $(document).ready(() => {
         }
       
         validOrder();
-        console.log(list);
-        localStorage.setItem("orders", JSON.stringify(foodList));
 
         fetch('https://fast-food-fast-food.herokuapp.com/api/v1/orders', {
              method : 'post',
@@ -71,7 +87,10 @@ $(document).ready(() => {
                  message.innerHTML = data.message;
                  return 
              }
-             location.href =  './../UI/index.html';
+             localStorage.setItem("lastOrderPrice", JSON.stringify(price));
+             localStorage.setItem("orderDetails", JSON.stringify(data.data));
+             localStorage.setItem("orders", JSON.stringify(foodList));
+             location.href =  './successpage.html';
  
             });
         });

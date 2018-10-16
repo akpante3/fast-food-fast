@@ -83,7 +83,7 @@ const validateFoodId = (req, res, next) => {
   } else if (!address || address.length > 100) {
     return missing(res, 'address');
   } else if (!orders || orders.length === 0) {
-    return missing(res, 'orders');
+    return missing(res, 'place a valid order,quantity');
   }
 
   const declineFood = [];
