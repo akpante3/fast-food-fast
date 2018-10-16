@@ -1,6 +1,3 @@
--- CREATE EXTENSION IF NOT EXISTS pgcrypto
--- id UUID PRIMRY KEY DEFAULT gen_random_uuid() 
- 
  CREATE TABLE IF NOT EXISTS users
 (
 id serial primary key,

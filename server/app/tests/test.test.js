@@ -5,7 +5,6 @@ import { db } from '../db/dbconnect';
 
 let userToken;
 let pin;
-let food;
 let foodID;
 let userid;
 let orderid;
@@ -228,7 +227,8 @@ describe('POST /api/v1/menu', () => {
   it('should post new food on the app', (done) => {
     const post = {
       food: 'garri',
-      price: '1000'
+      price: '1000',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6Xqo5jodDjDGH8l4U5v9rEgsvu9mt9D9V18UGXF50r1LpbZMM'
     };
     request(app)
       .post('/api/v1/menu')
@@ -238,7 +238,6 @@ describe('POST /api/v1/menu', () => {
       .expect((res) => {
         expect(res.body.status === 'success');
         const { foodid } = res.body.data;
-        food = res.body.data;
         foodID = foodid;
       })
       .end(() => {
@@ -258,7 +257,6 @@ describe('POST /api/v1/menu', () => {
       .expect((res) => {
         expect(res.body.status === 'success');
         const { foodid } = res.body.data;
-        food = res.body.data;
         foodID = foodid;
       })
       .end(() => {
@@ -370,8 +368,8 @@ describe('POST /api/v1/orders', () => {
   it('should post an order when required data is complete', (done) => {
     const order1 = {
       email: 'akpante@yahoo.com',
-      number: '08064753028',
       address: '10 round road',
+      number: '08064753028',
       orders: [
         {
           foodid: foodID,
